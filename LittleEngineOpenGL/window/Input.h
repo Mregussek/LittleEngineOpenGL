@@ -3,8 +3,8 @@
 #define INPUT_H
 
 
-#include "../includes.h"
-#include "../defines.h"
+#include "includes.h"
+#include "defines.h"
 
 
 namespace le
@@ -12,11 +12,13 @@ namespace le
 
 
 class Window;
+class Camera;
 
 
 struct InputSpecification {
 
 	Window* pWindow{ nullptr };
+	Camera* pCamera{ nullptr };
 
 };
 

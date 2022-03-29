@@ -9,6 +9,7 @@
 #include "renderer/Renderer.h"
 #include "renderer/Shader.h"
 #include "renderer/Buffer.h"
+#include "renderer/Camera.h"
 
 
 auto main() -> i32 {
@@ -20,17 +21,22 @@ auto main() -> i32 {
     le::Window window;
     window.init(windowSpecs);
 
-    le::InputSpecification inputSpecs;
-    inputSpecs.pWindow = &window;
-
-    le::Input input;
-    input.init(inputSpecs);
-
     le::RendererSpecification renderSpecs;
     renderSpecs.clearColor = le::color4{ 0.2f, 0.3f, 0.7f, 1.f };
 
     le::Renderer renderer;
     renderer.init(renderSpecs);
+
+    le::Camera camera;
+    camera.init();
+    window.updateCallbacksForCamera(&camera);
+
+    le::InputSpecification inputSpecs;
+    inputSpecs.pWindow = &window;
+    inputSpecs.pCamera = &camera;
+
+    le::Input input;
+    input.init(inputSpecs);
 
     le::Shader shader;
     shader.init();
@@ -67,6 +73,7 @@ auto main() -> i32 {
     };
 
     while (!window.isGoingToClose()) {
+        window.updateDeltaTime();
         input.process();
 
         renderer.clearScreen();

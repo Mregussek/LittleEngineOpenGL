@@ -5,6 +5,13 @@
 namespace le
 {
 
+	
+vec3::vec3(f32 _x, f32 _y, f32 _z) :
+	x(_x),
+	y(_y),
+	z(_z)
+{ }
+
 
 vec3 vec3::cross(vec3 a, vec3 b) {
 	return {

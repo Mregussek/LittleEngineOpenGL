@@ -9,11 +9,12 @@ namespace le
 
 
 b8 Renderer::init(RendererSpecification _renderSpecs) {
+    renderSpecs = _renderSpecs;
     if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress)) {
         std::cout << "Failed to initialize GLAD" << std::endl;
         return LFALSE;
     }
-    renderSpecs = _renderSpecs;
+    glEnable(GL_DEPTH_TEST);
     std::cout << "Renderer initialized!\n";
     return LTRUE;
 }
@@ -22,7 +23,7 @@ b8 Renderer::init(RendererSpecification _renderSpecs) {
 void Renderer::clearScreen() const {
     glClearColor(renderSpecs.clearColor.r, renderSpecs.clearColor.g,
                  renderSpecs.clearColor.b, renderSpecs.clearColor.a);
-    glClear(GL_COLOR_BUFFER_BIT);
+    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 }
 
 

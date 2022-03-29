@@ -6,6 +6,10 @@
 #define LTRUE 1
 #define LFALSE 0
 
+#define LPI 3.14159265358979323846f
+#define LDEG2RAD(x) (x * 0.01745329251f)
+#define LRAD2DEG(x) (x * 57.29577951308f)
+
 
 #include <cstdint>
 

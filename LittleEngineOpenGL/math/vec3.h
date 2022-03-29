@@ -3,8 +3,8 @@
 #define VEC3_H
 
 
-#include "../includes.h"
-#include "../defines.h"
+#include "includes.h"
+#include "defines.h"
 
 
 namespace le
@@ -16,6 +16,9 @@ struct vec3 {
     union { f32 x, r; };
     union { f32 y, g; };
     union { f32 z, b; };
+
+    vec3() = default;
+    vec3(f32 _x, f32 _y, f32 _z);
 
     template<typename T> vec3 add(T v) const;
     template<typename T> vec3 subtract(T f) const;

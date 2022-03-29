@@ -3,12 +3,15 @@
 #define WINDOW_H
 
 
-#include "../includes.h"
-#include "../defines.h"
+#include "includes.h"
+#include "defines.h"
 
 
 namespace le
 {
+
+
+class Camera;
 
 
 struct WindowSpecification {
@@ -26,16 +29,24 @@ class Window {
 
 public:
 
-	b8 init(WindowSpecification specs);
+	b8 init(WindowSpecification _windowSpecs);
 	void close();
 
+	void updateDeltaTime();
 	void swapBuffers() const;
 
 	b8 isGoingToClose() const;
+	f32 getDeltaTime() const;
+	
+	void updateCallbacksForCamera(Camera* _pCamera);
 
 private:
 
+	WindowSpecification windowSpecs{};
 	GLFWwindow* pWindow{ nullptr };
+	Camera* pCamera{ nullptr };
+	f32 deltaTime{ 0.0f };
+	f32 lastFrame{ 0.0f };
 
 };
 

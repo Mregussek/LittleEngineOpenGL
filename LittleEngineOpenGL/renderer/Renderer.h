@@ -3,9 +3,9 @@
 #define RENDERER_H
 
 
-#include "../includes.h"
-#include "../defines.h"
-#include "../math/vec4.h"
+#include "includes.h"
+#include "defines.h"
+#include "math/vec4.h"
 
 
 namespace le
