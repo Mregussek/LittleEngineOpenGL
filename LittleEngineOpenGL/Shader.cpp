@@ -13,9 +13,10 @@ const char* vertexShaderSource = "#version 460 core\n"
     "}\0";
 const char* fragmentShaderSource = "#version 460 core\n"
     "out vec4 FragColor;\n"
+    "uniform float uColor;"
     "void main()\n"
     "{\n"
-    "   FragColor = vec4(1.0f, 0.5f, 0.2f, 1.0f);\n"
+    "   FragColor = vec4(uColor, uColor, uColor, 1.0f);\n"
     "}\n\0";
 
 
@@ -68,6 +69,21 @@ void Shader::close() {
 
 void Shader::use() const {
     glUseProgram(shaderProgram);
+}
+
+
+void Shader::setBool(const std::string& name, b32 value) const {
+    glUniform1i(glGetUniformLocation(shaderProgram, name.c_str()), value);
+}
+
+
+void Shader::setInt(const std::string& name, i32 value) const {
+    glUniform1i(glGetUniformLocation(shaderProgram, name.c_str()), value);
+}
+
+
+void Shader::setFloat(const std::string& name, f32 value) const {
+    glUniform1f(glGetUniformLocation(shaderProgram, name.c_str()), value);
 }
 
 

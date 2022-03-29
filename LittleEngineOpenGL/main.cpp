@@ -31,6 +31,8 @@ auto main() -> i32 {
 
     le::Shader shader;
     shader.init();
+    shader.use();
+    shader.setFloat("uColor", 0.5f);
 
     std::vector<f32> vertices{
          0.5f,  0.5f, 0.0f,
