@@ -3,8 +3,8 @@
 #define WINDOW_H
 
 
-#include "includes.h"
-#include "defines.h"
+#include "../includes.h"
+#include "../defines.h"
 
 
 namespace le

@@ -1,11 +1,11 @@
 
 #include "includes.h"
 #include "defines.h"
-#include "Window.h"
-#include "Input.h"
-#include "Renderer.h"
-#include "Shader.h"
-#include "Buffer.h"
+#include "window/Window.h"
+#include "window/Input.h"
+#include "renderer/Renderer.h"
+#include "renderer/Shader.h"
+#include "renderer/Buffer.h"
 
 
 auto main() -> i32 {
