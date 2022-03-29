@@ -20,7 +20,8 @@ b8 Renderer::init(RendererSpecification _renderSpecs) {
 
 
 void Renderer::clearScreen() const {
-    glClearColor(renderSpecs.clearColor.r, renderSpecs.clearColor.g, renderSpecs.clearColor.b, 1.0f);
+    glClearColor(renderSpecs.clearColor.r, renderSpecs.clearColor.g,
+                 renderSpecs.clearColor.b, 1.0f);
     glClear(GL_COLOR_BUFFER_BIT);
 }
 

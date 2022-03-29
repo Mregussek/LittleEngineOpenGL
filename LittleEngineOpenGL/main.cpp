@@ -1,6 +1,7 @@
 
 #include "includes.h"
 #include "defines.h"
+#include "math/vec3.h"
 #include "window/Window.h"
 #include "window/Input.h"
 #include "renderer/Renderer.h"
@@ -24,7 +25,7 @@ auto main() -> i32 {
     input.init(inputSpecs);
 
     le::RendererSpecification renderSpecs;
-    renderSpecs.clearColor = { 0.2f, 0.3f, 0.7f };
+    renderSpecs.clearColor = le::color3{ 0.2f, 0.3f, 0.7f };
 
     le::Renderer renderer;
     renderer.init(renderSpecs);

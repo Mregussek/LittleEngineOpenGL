@@ -5,6 +5,7 @@
 
 #include "../includes.h"
 #include "../defines.h"
+#include "../math/vec3.h"
 
 
 namespace le
@@ -15,17 +16,11 @@ class Buffer;
 class Shader;
 
 
-struct RenderClearColor {
-	float r, g, b;
-};
-
-
 struct RendererSpecification {
 
-	RenderClearColor clearColor{ 0.f, 0.f, 0.f };
+	color3 clearColor{ 0.f, 0.f, 0.f };
 
 };
-
 
 
 class Renderer {
