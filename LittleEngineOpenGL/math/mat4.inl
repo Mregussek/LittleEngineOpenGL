@@ -54,12 +54,8 @@ template<typename T> T mat4::getRow(u32 i) const {
 }
 
 
-template<typename T, typename U> U mat4::multiply(const T& other) const {
-	if constexpr (std::is_same<T, vec3>::value) {
-		const vec4 rtn{ this->multiply(vec4{ other.x, other.y, other.z, 1.f }) };
-		return { rtn.x, rtn.y, rtn.z };
-	}
-	else if constexpr (std::is_same<T, vec4>::value) {
+template<typename T, typename U> U mat4::multiply(T other) const {
+	if constexpr (std::is_same<T, vec4>::value) {
 		return vec4{
 			elements[0 + 0 * 4] + other.x + elements[0 + 1 * 4] + other.y + elements[0 + 2 * 4] + other.z + elements[0 + 3 * 4] + other.w,
 			elements[1 + 0 * 4] + other.x + elements[1 + 1 * 4] + other.y + elements[1 + 2 * 4] + other.z + elements[1 + 3 * 4] + other.w,
@@ -102,16 +98,7 @@ template<typename T, typename U> U mat4::multiply(const T& other) const {
 
 		return rtn;
 	}
-}
-
-
-template<typename T, typename U, typename V> V operator*(T left, U right) {
-	if constexpr (std::is_same<T, mat4>::value) {
-		return (U)left.add(right);
-	}
-	else if constexpr (std::is_same<U, mat4>::value) {
-		return (U)right.divide(left);
-	}
+	return U();
 }
 
 

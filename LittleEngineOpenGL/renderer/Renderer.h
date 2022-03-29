@@ -29,7 +29,7 @@ public:
 	b8 init(RendererSpecification _renderSpecs);
 
 	void clearScreen() const;
-	void draw(Shader* pShader, Buffer* pBuffer) const;
+	void draw(Shader* pShader, Buffer* pBuffer, void(*uniformSetupFunc)(Shader* pShader)) const;
 
 private:
 

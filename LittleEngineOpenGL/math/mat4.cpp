@@ -1,5 +1,6 @@
 
 #include "mat4.h"
+#include "vec4.h"
 #include "vec3.h"
 
 
@@ -8,9 +9,6 @@ namespace le
 
 
 mat4::mat4(f32 diagonal) {
-	for (u32 i = 0; i < 4 * 4; i++) {
-		elements[i] = 0.0f;
-	}
 	for (u32 i = 0; i < 4; i++) {
 		elements[i + i * 4] = diagonal;
 	}
@@ -58,7 +56,7 @@ mat4 mat4::lookAt(vec3 eye, vec3 center, vec3 y) {
 	rtn[0 + 3 * 4] = -vec3::dot(side, eye);
 	rtn[1 + 3 * 4] = -vec3::dot(up, eye);
 	rtn[2 + 3 * 4] = vec3::dot(fwd, eye);
-	rtn[3 + 3 * 4] = 1.0f;
+	rtn[3 + 3 * 4] = 1.f;
 
 	return rtn;
 }
@@ -75,11 +73,11 @@ mat4 mat4::translation(vec3 v) {
 
 
 mat4 mat4::rotation(f32 angle, vec3 axis) {
-	mat4 result(1.0f);
+	mat4 result(1.f);
 
 	const f32 cosine{ cos(angle) };
 	const f32 sine{ sin(angle) };
-	const f32 neg_cosine{ 1.0f - cosine };
+	const f32 neg_cosine{ 1.f - cosine };
 
 	const vec3 ax{ vec3::normalize(axis) };
 	const f32 x{ ax.x };
@@ -120,6 +118,21 @@ b8 mat4::compare(const mat4& left, const mat4& right) {
 
 	return LTRUE;
 };
+
+
+mat4 operator*(const mat4& left, const mat4& right) {
+	return left.multiply<const mat4&, mat4>(right);
+}
+
+
+vec4 operator*(const mat4& left, vec4 right) {
+	return left.multiply<vec4, vec4>(right);
+}
+
+
+vec4 operator*(vec4 left, const mat4& right) {
+	return right.multiply<vec4, vec4>(left);
+}
 
 
 const f32 mat4::operator[](u32 index) const {

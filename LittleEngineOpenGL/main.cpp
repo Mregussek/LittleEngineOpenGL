@@ -2,6 +2,8 @@
 #include "includes.h"
 #include "defines.h"
 #include "math/vec3.h"
+#include "math/vec4.h"
+#include "math/mat4.h"
 #include "window/Window.h"
 #include "window/Input.h"
 #include "renderer/Renderer.h"
@@ -57,11 +59,18 @@ auto main() -> i32 {
     le::Buffer buffer;
     buffer.init(bufferSpecs);
 
+    auto rotateObject = [](le::Shader* pShader) {
+        const le::mat4 t{ le::mat4::translation({ 0.f, 0.f, 0.f }) };
+        const le::mat4 r{ le::mat4::rotation((f32)glfwGetTime(), { 0.f, 0.f, 1.f }) };
+        const le::mat4 calc{ t * r };
+        pShader->setMat4("transform", r);
+    };
+
     while (!window.isGoingToClose()) {
         input.process();
 
         renderer.clearScreen();
-        renderer.draw(&shader, &buffer);
+        renderer.draw(&shader, &buffer, rotateObject);
 
         window.swapBuffers();
     }

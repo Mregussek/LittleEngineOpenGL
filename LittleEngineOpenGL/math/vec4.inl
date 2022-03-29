@@ -50,46 +50,6 @@ namespace le
 	}
 
 
-	template<typename T, typename U> vec4 operator+(T left, U right) {
-		if constexpr (std::is_same<T, vec4>::value) {
-			return left.add(right);
-		}
-		else if constexpr (std::is_same<U, vec4>::value) {
-			return right.add(left);
-		}
-	}
-
-
-	template<typename T, typename U> vec4 operator-(T left, U right) {
-		if constexpr (std::is_same<T, vec4>::value) {
-			return left.add(right);
-		}
-		else if constexpr (std::is_same<U, vec4>::value) {
-			return right.subtract(left);
-		}
-	}
-
-
-	template<typename T, typename U> vec4 operator*(T left, U right) {
-		if constexpr (std::is_same<T, vec4>::value) {
-			return left.add(right);
-		}
-		else if constexpr (std::is_same<U, vec4>::value) {
-			return right.multiply(left);
-		}
-	}
-
-
-	template<typename T, typename U> vec4 operator/(T left, U right) {
-		if constexpr (std::is_same<T, vec4>::value) {
-			return left.add(right);
-		}
-		else if constexpr (std::is_same<U, vec4>::value) {
-			return right.divide(left);
-		}
-	}
-
-
 }
 
 

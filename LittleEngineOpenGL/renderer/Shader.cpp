@@ -1,5 +1,8 @@
 
 #include "Shader.h"
+#include "../math/vec3.h"
+#include "../math/vec4.h"
+#include "../math/mat4.h"
 
 
 namespace le
@@ -7,13 +10,14 @@ namespace le
 
 const char* vertexShaderSource = "#version 460 core\n"
     "layout (location = 0) in vec3 aPos;\n"
+    "uniform mat4 transform;\n"
     "void main()\n"
     "{\n"
-    "   gl_Position = vec4(aPos.x, aPos.y, aPos.z, 1.0);\n"
+    "   gl_Position = transform * vec4(aPos, 1.0);\n"
     "}\0";
 const char* fragmentShaderSource = "#version 460 core\n"
     "out vec4 FragColor;\n"
-    "uniform float uColor;"
+    "uniform float uColor;\n"
     "void main()\n"
     "{\n"
     "   FragColor = vec4(uColor, uColor, uColor, 1.0f);\n"
@@ -84,6 +88,31 @@ void Shader::setInt(const char* name, i32 value) const {
 
 void Shader::setFloat(const char* name, f32 value) const {
     glUniform1f(glGetUniformLocation(shaderProgram, name), value);
+}
+
+
+void Shader::setVec3(const char* name, vec3 value) const {
+    glUniform3fv(glGetUniformLocation(shaderProgram, name), 1, &value.x);
+}
+
+
+void Shader::setVec3(const char* name, f32 x, f32 y, f32 z) const {
+    glUniform3f(glGetUniformLocation(shaderProgram, name), x, y, z);
+}
+
+
+void Shader::setVec4(const char* name, const vec4& value) const {
+    glUniform4fv(glGetUniformLocation(shaderProgram, name), 1, &value.x);
+}
+
+
+void Shader::setVec4(const char* name, f32 x, f32 y, f32 z, f32 w) const {
+    glUniform4f(glGetUniformLocation(shaderProgram, name), x, y, z, w);
+}
+
+
+void Shader::setMat4(const char* name, const mat4& mat) const {
+    glUniformMatrix4fv(glGetUniformLocation(shaderProgram, name), 1, GL_FALSE, &mat.elements[0]);
 }
 
 

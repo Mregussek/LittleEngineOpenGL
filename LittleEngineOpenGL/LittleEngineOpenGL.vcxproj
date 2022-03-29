@@ -149,6 +149,7 @@
   <ItemGroup>
     <ClCompile Include="3rdparty\glad\src\glad.c" />
     <ClCompile Include="math\mat4.cpp" />
+    <ClCompile Include="math\vec4.cpp" />
     <ClCompile Include="renderer\Buffer.cpp" />
     <ClCompile Include="math\vec3.cpp" />
     <ClCompile Include="window\Input.cpp" />
@@ -159,6 +160,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="math\mat4.h" />
+    <ClInclude Include="math\vec4.h" />
     <ClInclude Include="renderer\Buffer.h" />
     <ClInclude Include="defines.h" />
     <ClInclude Include="includes.h" />
@@ -169,7 +171,9 @@
     <ClInclude Include="window\Window.h" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="math\mat4.inl" />
     <None Include="math\vec3.inl" />
+    <None Include="math\vec4.inl" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

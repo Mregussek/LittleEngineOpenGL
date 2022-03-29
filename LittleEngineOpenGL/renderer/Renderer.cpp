@@ -26,8 +26,9 @@ void Renderer::clearScreen() const {
 }
 
 
-void Renderer::draw(Shader* pShader, Buffer* pBuffer) const {
+void Renderer::draw(Shader* pShader, Buffer* pBuffer, void(*uniformSetupFunc)(Shader* pShader)) const {
     pShader->use();
+    uniformSetupFunc(pShader);
     pBuffer->use();
     glDrawElements(GL_TRIANGLES, pBuffer->getSpecs().countIndices, GL_UNSIGNED_INT, 0);
 }

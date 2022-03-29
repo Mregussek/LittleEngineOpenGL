@@ -33,10 +33,15 @@ struct vec3 {
 };
 
 
-template<typename T, typename U> vec3 operator+(T left, U right);
-template<typename T, typename U> vec3 operator-(T left, U right);
-template<typename T, typename U> vec3 operator*(T left, U right);
-template<typename T, typename U> vec3 operator/(T left, U right);
+vec3 operator+(vec3 left, f32 right);
+vec3 operator-(vec3 left, f32 right);
+vec3 operator*(vec3 left, f32 right);
+vec3 operator/(vec3 left, f32 right);
+
+vec3 operator+(f32 left, vec3 right);
+vec3 operator-(f32 left, vec3 right);
+vec3 operator*(f32 left, vec3 right);
+vec3 operator/(f32 left, vec3 right);
 
 
 using color3 = vec3;

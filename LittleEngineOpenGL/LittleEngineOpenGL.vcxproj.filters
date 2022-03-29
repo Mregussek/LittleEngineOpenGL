@@ -42,6 +42,9 @@
     <ClCompile Include="math\mat4.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="math\vec4.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="defines.h">
@@ -71,9 +74,18 @@
     <ClInclude Include="math\mat4.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="math\vec4.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="math\vec3.inl">
+      <Filter>Header Files</Filter>
+    </None>
+    <None Include="math\vec4.inl">
+      <Filter>Header Files</Filter>
+    </None>
+    <None Include="math\mat4.inl">
       <Filter>Header Files</Filter>
     </None>
   </ItemGroup>

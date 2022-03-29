@@ -29,10 +29,15 @@ struct vec4 {
 };
 
 
-template<typename T, typename U> vec4 operator+(T left, U right);
-template<typename T, typename U> vec4 operator-(T left, U right);
-template<typename T, typename U> vec4 operator*(T left, U right);
-template<typename T, typename U> vec4 operator/(T left, U right);
+vec4 operator+(vec4 left, f32 right);
+vec4 operator-(vec4 left, f32 right);
+vec4 operator*(vec4 left, f32 right);
+vec4 operator/(vec4 left, f32 right);
+
+vec4 operator+(f32 left, vec4 right);
+vec4 operator-(f32 left, vec4 right);
+vec4 operator*(f32 left, vec4 right);
+vec4 operator/(f32 left, vec4 right);
 
 
 using color4 = vec4;

@@ -17,8 +17,9 @@ struct vec4;
 
 struct mat4 {
 
-	f32 elements[4 * 4];
+	f32 elements[4 * 4]{ 0.f };
 
+	mat4() = default;
 	mat4(f32 diagonal);
 
     template<typename T> T getColumn(u32 i) const;
@@ -26,7 +27,7 @@ struct mat4 {
 
 	static mat4 identity();
 
-	template<typename T, typename U> U multiply(const T& other) const;
+	template<typename T, typename U> U multiply(T other) const;
 
 	static mat4 perspective(f32 fov, f32 aspectRatio, f32 near, f32 far);
 	static mat4 lookAt(vec3 eye, vec3 center, vec3 y);
@@ -41,7 +42,9 @@ struct mat4 {
 };
 
 
-template<typename T, typename U, typename V> V operator*(T left, U right);
+mat4 operator*(const mat4& left, const mat4& right);
+vec4 operator*(const mat4& left, vec4 right);
+vec4 operator*(vec4 left, const mat4& right);
 
 
 }
