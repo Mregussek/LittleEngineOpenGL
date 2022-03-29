@@ -25,7 +25,7 @@ auto main() -> i32 {
     input.init(inputSpecs);
 
     le::RendererSpecification renderSpecs;
-    renderSpecs.clearColor = le::color3{ 0.2f, 0.3f, 0.7f };
+    renderSpecs.clearColor = le::color4{ 0.2f, 0.3f, 0.7f, 1.f };
 
     le::Renderer renderer;
     renderer.init(renderSpecs);

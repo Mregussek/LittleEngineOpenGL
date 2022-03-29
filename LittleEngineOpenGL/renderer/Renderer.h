@@ -5,7 +5,7 @@
 
 #include "../includes.h"
 #include "../defines.h"
-#include "../math/vec3.h"
+#include "../math/vec4.h"
 
 
 namespace le
@@ -18,7 +18,7 @@ class Shader;
 
 struct RendererSpecification {
 
-	color3 clearColor{ 0.f, 0.f, 0.f };
+	color4 clearColor{ 0.f, 0.f, 0.f, 1.f };
 
 };
 
