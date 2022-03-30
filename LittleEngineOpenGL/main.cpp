@@ -12,33 +12,6 @@
 #include "renderer/Camera.h"
 
 
-#include <glm/glm.hpp>
-#include <glm/gtc/matrix_transform.hpp>
-#include <glm/gtc/type_ptr.hpp>
-
-
-static glm::mat4 convert(const le::mat4& m) {
-    glm::mat4 rtn{
-        m[0 + 0 * 4], m[1 + 0 * 4], m[2 + 0 * 4], m[3 + 0 * 4],
-        m[0 + 1 * 4], m[1 + 1 * 4], m[2 + 1 * 4], m[3 + 1 * 4],
-        m[0 + 2 * 4], m[1 + 2 * 4], m[2 + 2 * 4], m[3 + 2 * 4],
-        m[0 + 3 * 4], m[1 + 3 * 4], m[2 + 3 * 4], m[3 + 3 * 4]
-    };
-    //rtn = {
-    //    m[0 + 0 * 4], m[0 + 1 * 4], m[0 + 2 * 4], m[0 + 3 * 4],
-    //    m[1 + 0 * 4], m[1 + 1 * 4], m[1 + 2 * 4], m[1 + 3 * 4],
-    //    m[2 + 0 * 4], m[2 + 1 * 4], m[2 + 2 * 4], m[2 + 3 * 4],
-    //    m[3 + 0 * 4], m[3 + 1 * 4], m[3 + 2 * 4], m[3 + 3 * 4]
-    //};
-    return rtn;
-}
-
-
-static glm::vec3 convert(le::vec3 v) {
-    return { v.x, v.y, v.z };
-}
-
-
 auto main() -> i32 {
     le::WindowSpecification windowSpecs;
     windowSpecs.width = 800;
@@ -126,10 +99,12 @@ auto main() -> i32 {
     buffer.init(bufferSpecs);
 
     auto rotateObject = [](le::Camera* pCamera, le::Shader* pShader) {
-        const glm::mat4 p = convert(pCamera->GetProjectionMatrix() * pCamera->GetViewMatrix());
-        const glm::mat4 t = glm::translate(glm::mat4(1.f), { 1.f, 0.f, -2.f });
-        const glm::mat4 r = glm::rotate(glm::mat4(1.f), (f32)glfwGetTime(), { 0.3f, 0.5f, 1.f });
-        pShader->setMat4("transform", glm::value_ptr(p * t * r));
+        const le::mat4 transform = pCamera->GetProjectionMatrix() *
+                                   pCamera->GetViewMatrix() *
+                                   le::mat4::translation({ 1.f, 0.f, -2.f }) *
+                                   le::mat4::rotation((f32)glfwGetTime(), { 0.3f, 0.5f, 1.f }) *
+                                   le::mat4::scale({ 1.f, 1.f, 1.f });
+        pShader->setMat4("transform", transform);
     };
 
     while (!window.isGoingToClose()) {

@@ -9,11 +9,6 @@
 #include "math/mat4.h"
 
 
-#include <glm/glm.hpp>
-#include <glm/gtc/matrix_transform.hpp>
-#include <glm/gtc/type_ptr.hpp>
-
-
 namespace le
 {
 
@@ -28,9 +23,9 @@ enum class CameraMovement {
 
 struct CameraSpecification {
 
-    glm::vec3 position{ 0.f, 0.f, 0.f };
-    glm::vec3 up{ 0.f, 1.f, 0.f };
-    glm::vec3 front{ 0.f, 0.f, -1.f };
+    vec3 position{ 0.f, 0.f, 0.f };
+    vec3 up{ 0.f, 1.f, 0.f };
+    vec3 front{ 0.f, 0.f, -1.f };
 
     f32 yaw{ -90.f };
     f32 pitch{ 0.0f };
@@ -117,23 +112,23 @@ public:
 public:
 
     void updateCameraVectors() {
-        glm::vec3 front;
-        front.x = cos(glm::radians(Yaw)) * cos(glm::radians(Pitch));
-        front.y = sin(glm::radians(Pitch));
-        front.z = sin(glm::radians(Yaw)) * cos(glm::radians(Pitch));
-        Front = glm::normalize(front);
-        Right = glm::normalize(glm::cross(Front, WorldUp));
-        Up = glm::normalize(glm::cross(Right, Front));
+        vec3 front;
+        front.x = cos(LDEG2RAD(Yaw)) * cos(LDEG2RAD(Pitch));
+        front.y = sin(LDEG2RAD(Pitch));
+        front.z = sin(LDEG2RAD(Yaw)) * cos(LDEG2RAD(Pitch));
+        Front = vec3::normalize(front);
+        Right = vec3::normalize(vec3::cross(Front, WorldUp));
+        Up = vec3::normalize(vec3::cross(Right, Front));
     }
 
 
     CameraSpecification camSpecs;
 
-    glm::vec3 Position;
-    glm::vec3 Front;
-    glm::vec3 Up;
-    glm::vec3 Right;
-    glm::vec3 WorldUp;
+    vec3 Position;
+    vec3 Front;
+    vec3 Up;
+    vec3 Right;
+    vec3 WorldUp;
 
     f32 Yaw;
     f32 Pitch;
