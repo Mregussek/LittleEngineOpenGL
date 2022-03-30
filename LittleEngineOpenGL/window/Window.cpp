@@ -10,39 +10,18 @@ namespace le
 f32 lastX{ 0.f };
 f32 lastY{ 0.f };
 b8 firstMouse{ LTRUE };
+Window* sWindow{ nullptr };
 Camera* sCamera{ nullptr };
 
 
-static void mouseCallback(GLFWwindow* pWindow, f64 xposIn, f64 yposIn) {
-    const f32 xpos{ (f32)xposIn };
-    const f32 ypos{ (f32)yposIn };
-
-    if (firstMouse) {
-        lastX = xpos;
-        lastY = ypos;
-        firstMouse = false;
-    }
-
-    f32 xoffset{ xpos - lastX };
-    f32 yoffset{ lastY - ypos };
-
-    lastX = xpos;
-    lastY = ypos;
-
-    if (sCamera) {
-        sCamera->ProcessMouseMovement(xoffset, yoffset);
-    }
-}
-
-static void scrollCallback(GLFWwindow* pWindow, f64 xoffset, f64 yoffset) {
-    if (sCamera) {
-        sCamera->ProcessMouseScroll((f32)yoffset);
-    }
-}
+static void framebufferSizeCallback(GLFWwindow* window, i32 width, i32 height);
+static void mouseCallback(GLFWwindow* pWindow, f64 xposIn, f64 yposIn);
+static void scrollCallback(GLFWwindow* pWindow, f64 xoffset, f64 yoffset);
 
 
 b8 Window::init(WindowSpecification _windowSpecs) {
     windowSpecs = _windowSpecs;
+    sWindow = this;
 
     glfwInit();
     glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4);
@@ -56,11 +35,8 @@ b8 Window::init(WindowSpecification _windowSpecs) {
         return LFALSE;
     }
     glfwMakeContextCurrent(pWindow);
-    
-    auto framebufferSizeCallback = [](GLFWwindow* window, i32 width, i32 height) {
-        glViewport(0, 0, width, height);
-    };
     glfwSetFramebufferSizeCallback(pWindow, framebufferSizeCallback);
+    glfwSetInputMode(pWindow, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
     std::cout << "Window initialized!\n";
     return LTRUE;
 }
@@ -95,6 +71,13 @@ f32 Window::getDeltaTime() const {
 }
 
 
+void Window::setSize(i32 w, i32 h) {
+    windowSpecs.width = w;
+    windowSpecs.height = h;
+    windowSpecs.aspectRatio = (f32)w / (f32)h;
+}
+
+
 void Window::updateCallbacksForCamera(Camera* _pCamera) {
     pCamera = _pCamera;
     sCamera = pCamera;
@@ -103,6 +86,41 @@ void Window::updateCallbacksForCamera(Camera* _pCamera) {
     firstMouse = LTRUE;
     glfwSetCursorPosCallback(pWindow, mouseCallback);
     glfwSetScrollCallback(pWindow, scrollCallback);
+}
+
+
+void framebufferSizeCallback(GLFWwindow* window, i32 width, i32 height) {
+    sWindow->setSize(width, height);
+    glViewport(0, 0, width, height);
+}
+
+
+void mouseCallback(GLFWwindow* pWindow, f64 xposIn, f64 yposIn) {
+    const f32 xpos{ (f32)xposIn };
+    const f32 ypos{ (f32)yposIn };
+
+    if (firstMouse) {
+        lastX = xpos;
+        lastY = ypos;
+        firstMouse = false;
+    }
+
+    f32 xoffset{ xpos - lastX };
+    f32 yoffset{ lastY - ypos };
+
+    lastX = xpos;
+    lastY = ypos;
+
+    if (sCamera) {
+        // sCamera->ProcessMouseMovement(xoffset, yoffset);
+    }
+}
+
+
+void scrollCallback(GLFWwindow* pWindow, f64 xoffset, f64 yoffset) {
+    if (sCamera) {
+        // sCamera->ProcessMouseScroll((f32)yoffset);
+    }
 }
 
 

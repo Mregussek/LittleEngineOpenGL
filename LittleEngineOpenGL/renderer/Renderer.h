@@ -14,11 +14,13 @@ namespace le
 
 class Buffer;
 class Shader;
+class Camera;
 
 
 struct RendererSpecification {
 
 	color4 clearColor{ 0.f, 0.f, 0.f, 1.f };
+	Camera* pCamera{ nullptr };
 
 };
 
@@ -29,7 +31,7 @@ public:
 	b8 init(RendererSpecification _renderSpecs);
 
 	void clearScreen() const;
-	void draw(Shader* pShader, Buffer* pBuffer, void(*uniformSetupFunc)(Shader* pShader)) const;
+	void draw(Shader* pShader, Buffer* pBuffer, void(*uniformSetupFunc)(Camera* pCamera, Shader* pShader)) const;
 
 private:
 

@@ -21,14 +21,19 @@ auto main() -> i32 {
     le::Window window;
     window.init(windowSpecs);
 
-    le::RendererSpecification renderSpecs;
-    renderSpecs.clearColor = le::color4{ 0.2f, 0.3f, 0.7f, 1.f };
-
-    le::Renderer renderer;
-    renderer.init(renderSpecs);
+    le::CameraSpecification camSpecs;
+    camSpecs.aspectRatio = (f32)windowSpecs.width / (f32)windowSpecs.height;
+    camSpecs.position = { 0.f, 0.f, 1.f };
+    camSpecs.up = { 0.f, 1.f, 0.f };
+    camSpecs.front = { 0.f, 0.f, -1.f };
+    camSpecs.yaw = -90.f;
+    camSpecs.pitch = 0.f;
+    camSpecs.movementSpeed = 2.5f;
+    camSpecs.sensitivity = 0.1f;
+    camSpecs.zoom = 45.f;
 
     le::Camera camera;
-    camera.init();
+    camera.init(camSpecs);
     window.updateCallbacksForCamera(&camera);
 
     le::InputSpecification inputSpecs;
@@ -38,20 +43,47 @@ auto main() -> i32 {
     le::Input input;
     input.init(inputSpecs);
 
+    le::RendererSpecification renderSpecs;
+    renderSpecs.clearColor = le::color4{ 0.2f, 0.3f, 0.7f, 1.f };
+    renderSpecs.pCamera = &camera;
+
+    le::Renderer renderer;
+    renderer.init(renderSpecs);
+
     le::Shader shader;
     shader.init();
     shader.use();
     shader.setFloat("uColor", 0.5f);
 
-    std::vector<f32> vertices{
-         0.5f,  0.5f, 0.0f,
-         0.5f, -0.5f, 0.0f,
-        -0.5f, -0.5f, 0.0f,
-        -0.5f,  0.5f, 0.0f 
+    std::array<f32, 24> vertices{
+        -1.f, -1.f,  0.5f, // 0
+         1.f, -1.f,  0.5f, // 1
+        -1.f,  1.f,  0.5f, // 2
+         1.f,  1.f,  0.5f, // 3
+        -1.f, -1.f, -0.5f, // 4
+         1.f, -1.f, -0.5f, // 5
+        -1.f,  1.f, -0.5f, // 6
+         1.f,  1.f, -0.5f  // 7
     };
-    std::vector<u32> indices{
+    std::array<u32, 36> indices{
+        // Top
+        2, 6, 7,
+        2, 3, 7,
+        // Bottom
+        0, 4, 5,
+        0, 1, 5,
+        // Left
+        0, 2, 6,
+        0, 4, 6,
+        // Right
+        1, 3, 7,
+        1, 5, 7,
+        // Front
+        0, 2, 3,
         0, 1, 3,
-        1, 2, 3,
+        // Back
+        4, 6, 7,
+        4, 5, 7
     };
 
     le::BufferSpecification bufferSpecs;
@@ -65,11 +97,13 @@ auto main() -> i32 {
     le::Buffer buffer;
     buffer.init(bufferSpecs);
 
-    auto rotateObject = [](le::Shader* pShader) {
-        const le::mat4 t{ le::mat4::translation({ 0.f, 0.f, 0.f }) };
+    auto rotateObject = [](le::Camera* pCamera, le::Shader* pShader) {
+        const le::mat4 p{ pCamera->GetProjectionMatrix() };
+        const le::mat4 v{ pCamera->GetViewMatrix() };
+        const le::mat4 t{ le::mat4::translation({ 0.f, 0.f, -1.f }) };
         const le::mat4 r{ le::mat4::rotation((f32)glfwGetTime(), { 0.f, 0.f, 1.f }) };
-        const le::mat4 calc{ t * r };
-        pShader->setMat4("transform", r);
+        const le::mat4 calc{ r };
+        pShader->setMat4("transform", calc);
     };
 
     while (!window.isGoingToClose()) {

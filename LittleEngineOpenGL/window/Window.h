@@ -19,6 +19,7 @@ struct WindowSpecification {
 	std::string name{ "LittleEngineOpenGL" };
 	i32 width{ 0 };
 	i32 height{ 0 };
+	f32 aspectRatio{ 0.f };
 
 };
 
@@ -38,6 +39,8 @@ public:
 	b8 isGoingToClose() const;
 	f32 getDeltaTime() const;
 	
+	void setSize(i32 w, i32 h);
+
 	void updateCallbacksForCamera(Camera* _pCamera);
 
 private:
