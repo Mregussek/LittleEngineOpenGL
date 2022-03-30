@@ -21,6 +21,26 @@ b8 vec4::operator!=(vec4 other) const {
 }
 
 
+vec4 operator+(vec4 left, vec4 right) {
+	return left.add(right);
+}
+
+
+vec4 operator-(vec4 left, vec4 right) {
+	return left.subtract(right);
+}
+
+
+vec4 operator*(vec4 left, vec4 right) {
+	return left.multiply(right);
+}
+
+
+vec4 operator/(vec4 left, vec4 right) {
+	return left.divide(right);
+}
+
+
 vec4 operator+(vec4 left, f32 right) {
 	return left.add(right);
 }

@@ -53,6 +53,26 @@ b8 vec3::operator!=(vec3 other) const {
 }
 
 
+vec3 operator+(vec3 left, vec3 right) {
+	return left.add(right);
+}
+
+
+vec3 operator-(vec3 left, vec3 right) {
+	return left.subtract(right);
+}
+
+
+vec3 operator*(vec3 left, vec3 right) {
+	return left.multiply(right);
+}
+
+
+vec3 operator/(vec3 left, vec3 right) {
+	return left.divide(right);
+}
+
+
 vec3 operator+(vec3 left, f32 right) {
 	return left.add(right);
 }

@@ -126,13 +126,10 @@ auto main() -> i32 {
     buffer.init(bufferSpecs);
 
     auto rotateObject = [](le::Camera* pCamera, le::Shader* pShader) {
-        const glm::mat4 p = convert(pCamera->GetProjectionMatrix());
-        //const glm::mat4 p = glm::perspective(glm::radians(pCamera->Zoom), pCamera->aspectRatio, 0.1f, 100.0f);
-        //glm::mat4 v = convert(pCamera->GetViewMatrix());
-        glm::mat4 v = glm::lookAt(pCamera->Position, pCamera->Position + pCamera->Front, pCamera->Up);
+        const glm::mat4 p = convert(pCamera->GetProjectionMatrix() * pCamera->GetViewMatrix());
         const glm::mat4 t = glm::translate(glm::mat4(1.f), { 1.f, 0.f, -2.f });
         const glm::mat4 r = glm::rotate(glm::mat4(1.f), (f32)glfwGetTime(), { 0.3f, 0.5f, 1.f });
-        pShader->setMat4("transform", glm::value_ptr(p * v * t * r));
+        pShader->setMat4("transform", glm::value_ptr(p * t * r));
     };
 
     while (!window.isGoingToClose()) {

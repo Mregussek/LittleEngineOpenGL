@@ -68,19 +68,6 @@ mat4 mat4::lookAt(vec3 eye, vec3 center, vec3 y) {
 	rtn[3 + 2 * 4] = 0.f;
 	rtn[3 + 3 * 4] = 1.f;
 
-	//rtn[0 + 0 * 4] = side.x;
-	//rtn[0 + 1 * 4] = up.x;
-	//rtn[0 + 2 * 4] = -fwd.x;
-	//rtn[1 + 0 * 4] = side.y;
-	//rtn[1 + 1 * 4] = up.y;
-	//rtn[1 + 2 * 4] = -fwd.y;
-	//rtn[2 + 0 * 4] = side.z;
-	//rtn[2 + 1 * 4] = up.z;
-	//rtn[2 + 2 * 4] = -fwd.z;
-	//rtn[3 + 0 * 4] = -vec3::dot(side, eye);
-	//rtn[3 + 1 * 4] = -vec3::dot(up, eye);
-	//rtn[3 + 2 * 4] = vec3::dot(fwd, eye);
-
 	return rtn;
 }
 
@@ -143,21 +130,6 @@ b8 mat4::compare(const mat4& left, const mat4& right) {
 };
 
 
-mat4 operator*(const mat4& left, const mat4& right) {
-	return left.multiply<const mat4&, mat4>(right);
-}
-
-
-vec4 operator*(const mat4& left, vec4 right) {
-	return left.multiply<vec4, vec4>(right);
-}
-
-
-vec4 operator*(vec4 left, const mat4& right) {
-	return right.multiply<vec4, vec4>(left);
-}
-
-
 const f32 mat4::operator[](u32 index) const {
 	if (index >= 4 * 4) {
 		static_assert(true, "matrix.elements[index] out of bound!\n");
@@ -171,6 +143,65 @@ f32& mat4::operator[](u32 index) {
 		static_assert(true, "const matrix.elements[index] out of bound!\n");
 	}
 	return elements[index];
+}
+
+
+mat4 operator*(const mat4& left, const mat4& right) {
+	return left.multiply<mat4, mat4>(right);
+}
+
+
+vec4 operator*(const mat4& left, vec4 right) {
+	return left.multiply<vec4, vec4>(right);
+}
+
+
+vec4 operator*(vec4 left, const mat4& right) {
+	return right.multiply<vec4, vec4>(left);
+}
+
+
+mat4 mat4::multiplyMat4Mat4(const mat4& m, const mat4& n) {
+	mat4 rtn;
+
+	const vec4 left[4]{ m.getColumn<vec4>(0), m.getColumn<vec4>(1), m.getColumn<vec4>(2), m.getColumn<vec4>(3) };
+
+	const vec4 col1{ left[0] * n[0 + 0 * 4] + left[1] * n[1 + 0 * 4] + left[2] * n[2 + 0 * 4] + left[3] * n[3 + 0 * 4] };
+	const vec4 col2{ left[0] * n[0 + 1 * 4] + left[1] * n[1 + 1 * 4] + left[2] * n[2 + 1 * 4] + left[3] * n[3 + 1 * 4] };
+	const vec4 col3{ left[0] * n[0 + 2 * 4] + left[1] * n[1 + 2 * 4] + left[2] * n[2 + 2 * 4] + left[3] * n[3 + 2 * 4] };
+	const vec4 col4{ left[0] * n[0 + 3 * 4] + left[1] * n[1 + 3 * 4] + left[2] * n[2 + 3 * 4] + left[3] * n[3 + 3 * 4] };
+
+	rtn[0 + 0 * 4] = col1.x;
+	rtn[1 + 0 * 4] = col1.y;
+	rtn[2 + 0 * 4] = col1.z;
+	rtn[3 + 0 * 4] = col1.w;
+
+	rtn[0 + 1 * 4] = col2.x;
+	rtn[1 + 1 * 4] = col2.y;
+	rtn[2 + 1 * 4] = col2.z;
+	rtn[3 + 1 * 4] = col2.w;
+
+	rtn[0 + 2 * 4] = col3.x;
+	rtn[1 + 2 * 4] = col3.y;
+	rtn[2 + 2 * 4] = col3.z;
+	rtn[3 + 2 * 4] = col3.w;
+
+	rtn[0 + 3 * 4] = col4.x;
+	rtn[1 + 3 * 4] = col4.y;
+	rtn[2 + 3 * 4] = col4.z;
+	rtn[3 + 3 * 4] = col4.w;
+
+	return rtn;
+}
+
+
+vec4 mat4::multiplyMat4Vec4(const mat4& m, const vec4& v) {
+	return vec4{
+		m[0 + 0 * 4] + v.x + m[0 + 1 * 4] + v.y + m[0 + 2 * 4] + v.z + m[0 + 3 * 4] + v.w,
+		m[1 + 0 * 4] + v.x + m[1 + 1 * 4] + v.y + m[1 + 2 * 4] + v.z + m[1 + 3 * 4] + v.w,
+		m[2 + 0 * 4] + v.x + m[2 + 1 * 4] + v.y + m[2 + 2 * 4] + v.z + m[2 + 3 * 4] + v.w,
+		m[3 + 0 * 4] + v.x + m[3 + 1 * 4] + v.y + m[3 + 2 * 4] + v.z + m[3 + 3 * 4] + v.w
+	};
 }
 
 

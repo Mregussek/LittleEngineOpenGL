@@ -36,6 +36,11 @@ struct vec3 {
 };
 
 
+vec3 operator+(vec3 left, vec3 right);
+vec3 operator-(vec3 left, vec3 right);
+vec3 operator*(vec3 left, vec3 right);
+vec3 operator/(vec3 left, vec3 right);
+
 vec3 operator+(vec3 left, f32 right);
 vec3 operator-(vec3 left, f32 right);
 vec3 operator*(vec3 left, f32 right);

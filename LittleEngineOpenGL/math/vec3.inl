@@ -54,50 +54,6 @@ template<typename T> vec3 vec3::divide(T v) const {
 }
 
 
-template<typename T, typename U> vec3 operator+(T left, U right) {
-	if constexpr (std::is_same<T, vec3>::value) {
-		return left.add(right);
-	}
-	else if constexpr (std::is_same<U, vec3>::value) {
-		return right.add(left);
-	}
-	LLOG("ERROR");
-}
-
-
-template<typename T, typename U> vec3 operator-(T left, U right) {
-	if constexpr (std::is_same<T, vec3>::value) {
-		return left.add(right);
-	}
-	else if constexpr (std::is_same<U, vec3>::value) {
-		return right.subtract(left);
-	}
-	LLOG("ERROR");
-}
-
-
-template<typename T, typename U> vec3 operator*(T left, U right) {
-	if constexpr (std::is_same<T, vec3>::value) {
-		return left.add(right);
-	}
-	else if constexpr (std::is_same<U, vec3>::value) {
-		return right.multiply(left);
-	}
-	LLOG("ERROR");
-}
-
-
-template<typename T, typename U> vec3 operator/(T left, U right) {
-	if constexpr (std::is_same<T, vec3>::value) {
-		return left.add(right);
-	}
-	else if constexpr (std::is_same<U, vec3>::value) {
-		return right.divide(left);
-	}
-	LLOG("ERROR");
-}
-
-
 }
 
 

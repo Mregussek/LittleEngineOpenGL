@@ -29,6 +29,11 @@ struct vec4 {
 };
 
 
+vec4 operator+(vec4 left, vec4 right);
+vec4 operator-(vec4 left, vec4 right);
+vec4 operator*(vec4 left, vec4 right);
+vec4 operator/(vec4 left, vec4 right);
+
 vec4 operator+(vec4 left, f32 right);
 vec4 operator-(vec4 left, f32 right);
 vec4 operator*(vec4 left, f32 right);

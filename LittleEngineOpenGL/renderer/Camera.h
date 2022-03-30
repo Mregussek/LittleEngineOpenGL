@@ -61,7 +61,6 @@ public:
     }
 
     mat4 GetViewMatrix() {
-        //return glm::lookAt(Position, Position + Front, Up);
         const vec3 pos{ Position.x, Position.y, Position.z };
         const vec3 fro{ Front.x, Front.y, Front.z };
         const vec3 up{ Up.x, Up.y, Up.z };
@@ -69,7 +68,6 @@ public:
     }
 
     mat4 GetProjectionMatrix() {
-        //return glm::perspective(glm::radians(Zoom), aspectRatio, 0.1f, 100.0f);
         return mat4::perspective(LDEG2RAD(Zoom), aspectRatio, 0.1f, 100.f);
     }
 
