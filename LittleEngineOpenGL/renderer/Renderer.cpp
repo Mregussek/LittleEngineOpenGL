@@ -2,6 +2,7 @@
 #include "Renderer.h"
 #include "Shader.h"
 #include "Buffer.h"
+#include "models/Mesh.h"
 
 
 namespace le
@@ -32,11 +33,11 @@ void Renderer::clearScreen() const {
 }
 
 
-void Renderer::draw(Shader* pShader, Buffer* pBuffer, void(*uniformSetupFunc)(Camera* pCamera, Shader* pShader)) const {
-    pShader->use();
-    uniformSetupFunc(mRenderSpecs.pCamera, pShader);
-    pBuffer->use();
-    glDrawElements(GL_TRIANGLES, pBuffer->getSpecs().countIndices, GL_UNSIGNED_INT, 0);
+void Renderer::draw(const RenderModelSpecification& renderModelSpecs) const {
+    renderModelSpecs.pShader->use();
+    renderModelSpecs.pUniformSetupFunc(mRenderSpecs.pCamera, renderModelSpecs.pShader);
+    renderModelSpecs.pBuffer->use();
+    glDrawElements(GL_TRIANGLES, renderModelSpecs.pBuffer->getSpecs().countIndices, GL_UNSIGNED_INT, 0);
 }
 
 

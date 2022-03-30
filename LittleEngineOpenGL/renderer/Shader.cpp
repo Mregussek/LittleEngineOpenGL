@@ -10,17 +10,17 @@ namespace le
 
 const char* vertexShaderSource = "#version 460 core\n"
     "layout (location = 0) in vec3 aPos;\n"
-    "uniform mat4 transform;\n"
+    "uniform mat4 uTransform;\n"
     "void main()\n"
     "{\n"
-    "   gl_Position = transform * vec4(aPos, 1.0);\n"
+    "   gl_Position = uTransform * vec4(aPos, 1.0);\n"
     "}\0";
 const char* fragmentShaderSource = "#version 460 core\n"
     "out vec4 FragColor;\n"
-    "uniform float uColor;\n"
+    "uniform vec4 uColor;\n"
     "void main()\n"
     "{\n"
-    "   FragColor = vec4(uColor, uColor, uColor, 1.0f);\n"
+    "   FragColor = uColor;\n"
     "}\n\0";
 
 

@@ -10,7 +10,7 @@
 #include "renderer/Shader.h"
 #include "renderer/Buffer.h"
 #include "renderer/Camera.h"
-#include "models/Cube.h"
+#include "models/Mesh.h"
 
 
 auto main() -> i32 {
@@ -57,29 +57,48 @@ auto main() -> i32 {
     le::Shader shader;
     shader.init();
     shader.use();
-    shader.setFloat("uColor", 0.5f);
 
     le::Cube cube;
 
     le::BufferSpecification bufferSpecs;
-    bufferSpecs.pVertices = cube.vertices.data();
-    bufferSpecs.countVertices = (u32)cube.vertices.size();
-    bufferSpecs.sizeofVertices = (u32)cube.vertices.size() * sizeof(decltype(cube.vertices[0]));
-    bufferSpecs.pIndices = cube.indices.data();
-    bufferSpecs.countIndices = (u32)cube.indices.size();
-    bufferSpecs.sizeofIndices = (u32)cube.indices.size() * sizeof(decltype(cube.indices[0]));
+    bufferSpecs.pVertices = cube.vertices();
+    bufferSpecs.countVertices = cube.countVertices();
+    bufferSpecs.sizeofVertices = cube.sizeofVertices();
+    bufferSpecs.pIndices = cube.indices();
+    bufferSpecs.countIndices = cube.countIndices();
+    bufferSpecs.sizeofIndices = cube.sizeofIndices();
 
     le::Buffer buffer;
     buffer.init(bufferSpecs);
 
-    auto rotateObject = [](le::Camera* pCamera, le::Shader* pShader) {
+    auto transformObject1 = [](le::Camera* pCamera, le::Shader* pShader) {
         const le::mat4 transform = pCamera->getProjectionMatrix() *
-                                   pCamera->getViewMatrix() *
-                                   le::mat4::translation({ 1.f, 0.f, -2.f }) *
-                                   le::mat4::rotation((f32)glfwGetTime(), { 0.3f, 0.5f, 1.f }) *
-                                   le::mat4::scale({ 1.f, 1.f, 1.f });
-        pShader->setMat4("transform", transform);
+            pCamera->getViewMatrix() *
+            le::mat4::translation({ 1.f, 0.f, -2.f }) *
+            le::mat4::rotation((f32)glfwGetTime(), { 0.3f, 0.5f, 1.f }) *
+            le::mat4::scale({ 1.f, 1.f, 1.f });
+        pShader->setMat4("uTransform", transform);
+        pShader->setVec4("uColor", le::vec4{ 0.8f, 0.1f, 0.3f, 1.f });
     };
+    auto transformObject2 = [](le::Camera* pCamera, le::Shader* pShader) {
+        const le::mat4 transform = pCamera->getProjectionMatrix() *
+            pCamera->getViewMatrix() *
+            le::mat4::translation({ -1.f, 0.f, -1.f }) *
+            le::mat4::rotation((f32)glfwGetTime(), { 1.f, 0.5f, 0.3f }) *
+            le::mat4::scale({ 1.f, 1.f, 1.f });
+        pShader->setMat4("uTransform", transform);
+        pShader->setVec4("uColor", le::vec4{ 0.1f, 0.8f, 0.3f, 1.f });
+    };
+
+    le::RenderModelSpecification renderModelSpecs1;
+    renderModelSpecs1.pShader = &shader;
+    renderModelSpecs1.pBuffer = &buffer;
+    renderModelSpecs1.pUniformSetupFunc = transformObject1;
+
+    le::RenderModelSpecification renderModelSpecs2;
+    renderModelSpecs2.pShader = &shader;
+    renderModelSpecs2.pBuffer = &buffer;
+    renderModelSpecs2.pUniformSetupFunc = transformObject2;
 
     while (!window.isGoingToClose()) {
         window.updateDeltaTime();
@@ -89,7 +108,8 @@ auto main() -> i32 {
         renderer.updateSpecs(renderSpecs);
 
         renderer.clearScreen();
-        renderer.draw(&shader, &buffer, rotateObject);
+        renderer.draw(renderModelSpecs1);
+        renderer.draw(renderModelSpecs2);
 
         window.swapBuffers();
     }

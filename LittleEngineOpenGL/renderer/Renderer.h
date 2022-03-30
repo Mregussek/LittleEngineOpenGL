@@ -12,15 +12,25 @@ namespace le
 {
 
 
-class Buffer;
+class Model;
 class Shader;
 class Camera;
+class Buffer;
 
 
 struct RendererSpecification {
 
 	color4 clearColor{ 0.f, 0.f, 0.f, 1.f };
 	Camera* pCamera{ nullptr };
+
+};
+
+
+struct RenderModelSpecification {
+	
+	Shader* pShader{ nullptr };
+	Buffer* pBuffer{ nullptr };
+	void(*pUniformSetupFunc)(Camera* pCamera, Shader* pShader);
 
 };
 
@@ -32,7 +42,7 @@ public:
 	void updateSpecs(RendererSpecification _renderSpecs);
 
 	void clearScreen() const;
-	void draw(Shader* pShader, Buffer* pBuffer, void(*uniformSetupFunc)(Camera* pCamera, Shader* pShader)) const;
+	void draw(const RenderModelSpecification& renderModelSpecs) const;
 
 private:
 
