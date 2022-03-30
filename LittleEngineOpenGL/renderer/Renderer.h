@@ -29,13 +29,14 @@ class Renderer {
 public:
 
 	b8 init(RendererSpecification _renderSpecs);
+	void updateSpecs(RendererSpecification _renderSpecs);
 
 	void clearScreen() const;
 	void draw(Shader* pShader, Buffer* pBuffer, void(*uniformSetupFunc)(Camera* pCamera, Shader* pShader)) const;
 
 private:
 
-	RendererSpecification renderSpecs;
+	RendererSpecification mRenderSpecs;
 
 };
 

@@ -21,6 +21,26 @@ b8 vec4::operator!=(vec4 other) const {
 }
 
 
+vec4 vec4::random() {
+	return {
+		generateRandom(),
+		generateRandom(),
+		generateRandom(),
+		generateRandom()
+	};
+}
+
+
+vec4 vec4::random(f32 min, f32 max) {
+	return {
+		generateRandom(min, max),
+		generateRandom(min, max),
+		generateRandom(min, max),
+		generateRandom(min, max)
+	};
+}
+
+
 vec4 operator+(vec4 left, vec4 right) {
 	return left.add(right);
 }

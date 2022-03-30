@@ -10,6 +10,7 @@
 #include "renderer/Shader.h"
 #include "renderer/Buffer.h"
 #include "renderer/Camera.h"
+#include "models/Cube.h"
 
 
 auto main() -> i32 {
@@ -58,44 +59,15 @@ auto main() -> i32 {
     shader.use();
     shader.setFloat("uColor", 0.5f);
 
-    std::array<f32, 24> vertices{
-        -1.f, -1.f,  0.5f, // 0
-         1.f, -1.f,  0.5f, // 1
-        -1.f,  1.f,  0.5f, // 2
-         1.f,  1.f,  0.5f, // 3
-        -1.f, -1.f, -0.5f, // 4
-         1.f, -1.f, -0.5f, // 5
-        -1.f,  1.f, -0.5f, // 6
-         1.f,  1.f, -0.5f  // 7
-    };
-    std::array<u32, 36> indices{
-        // Top
-        2, 6, 7,
-        2, 3, 7,
-        // Bottom
-        0, 4, 5,
-        0, 1, 5,
-        // Left
-        0, 2, 6,
-        0, 4, 6,
-        // Right
-        1, 3, 7,
-        1, 5, 7,
-        // Front
-        0, 2, 3,
-        0, 1, 3,
-        // Back
-        4, 6, 7,
-        4, 5, 7
-    };
+    le::Cube cube;
 
     le::BufferSpecification bufferSpecs;
-    bufferSpecs.pVertices = vertices.data();
-    bufferSpecs.countVertices = (u32)vertices.size();
-    bufferSpecs.sizeofVertices = (u32)vertices.size() * sizeof(decltype(vertices[0]));
-    bufferSpecs.pIndices = indices.data();
-    bufferSpecs.countIndices = (u32)indices.size();
-    bufferSpecs.sizeofIndices = (u32)indices.size() * sizeof(decltype(indices[0]));
+    bufferSpecs.pVertices = cube.vertices.data();
+    bufferSpecs.countVertices = (u32)cube.vertices.size();
+    bufferSpecs.sizeofVertices = (u32)cube.vertices.size() * sizeof(decltype(cube.vertices[0]));
+    bufferSpecs.pIndices = cube.indices.data();
+    bufferSpecs.countIndices = (u32)cube.indices.size();
+    bufferSpecs.sizeofIndices = (u32)cube.indices.size() * sizeof(decltype(cube.indices[0]));
 
     le::Buffer buffer;
     buffer.init(bufferSpecs);
@@ -112,6 +84,9 @@ auto main() -> i32 {
     while (!window.isGoingToClose()) {
         window.updateDeltaTime();
         input.process();
+
+        renderSpecs.clearColor = le::color4::random(0.f, 0.1f);
+        renderer.updateSpecs(renderSpecs);
 
         renderer.clearScreen();
         renderer.draw(&shader, &buffer, rotateObject);

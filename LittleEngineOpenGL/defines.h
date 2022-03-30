@@ -34,4 +34,17 @@ using b8 = i8;
 using b32 = i32;
 
 
+template<typename val = f32>
+val generateRandom() {
+    static std::uniform_real_distribution<val> distribution((val)0.0, (val)1.0);
+    static std::mt19937 generator;
+    return (val)distribution(generator);
+}
+
+template<typename val = f32>
+val generateRandom(val min, val max) {
+    return min + (max - min) * generateRandom();
+}
+
+
 #endif

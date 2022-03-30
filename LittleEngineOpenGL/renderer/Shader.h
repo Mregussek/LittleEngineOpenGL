@@ -36,7 +36,7 @@ public:
 
 private:
 
-	u32 shaderProgram{ 0 };
+	u32 mShaderProgram{ 0 };
 
 };
 

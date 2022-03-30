@@ -9,7 +9,7 @@ namespace le
 
 
 b8 Renderer::init(RendererSpecification _renderSpecs) {
-    renderSpecs = _renderSpecs;
+    mRenderSpecs = _renderSpecs;
     if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress)) {
         LLOG("Failed to initialize GLAD");
         return LFALSE;
@@ -20,16 +20,21 @@ b8 Renderer::init(RendererSpecification _renderSpecs) {
 }
 
 
+void Renderer::updateSpecs(RendererSpecification _renderSpecs) {
+    mRenderSpecs = _renderSpecs;
+}
+
+
 void Renderer::clearScreen() const {
-    glClearColor(renderSpecs.clearColor.r, renderSpecs.clearColor.g,
-                 renderSpecs.clearColor.b, renderSpecs.clearColor.a);
+    glClearColor(mRenderSpecs.clearColor.r, mRenderSpecs.clearColor.g,
+                 mRenderSpecs.clearColor.b, mRenderSpecs.clearColor.a);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 }
 
 
 void Renderer::draw(Shader* pShader, Buffer* pBuffer, void(*uniformSetupFunc)(Camera* pCamera, Shader* pShader)) const {
     pShader->use();
-    uniformSetupFunc(renderSpecs.pCamera, pShader);
+    uniformSetupFunc(mRenderSpecs.pCamera, pShader);
     pBuffer->use();
     glDrawElements(GL_TRIANGLES, pBuffer->getSpecs().countIndices, GL_UNSIGNED_INT, 0);
 }

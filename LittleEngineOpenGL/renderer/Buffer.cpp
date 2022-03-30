@@ -12,20 +12,20 @@ static void displayBufferSpecs(const BufferSpecification& bufferSpecs) {
     
 
 b8 Buffer::init(BufferSpecification _bufferSpecs) {
-    bufferSpecs = _bufferSpecs;
-    displayBufferSpecs(bufferSpecs);
+    mBufferSpecs = _bufferSpecs;
+    displayBufferSpecs(mBufferSpecs);
 
-    glGenVertexArrays(1, &vao);
-    glGenBuffers(1, &vbo);
-    glGenBuffers(1, &ibo);
+    glGenVertexArrays(1, &mVAO);
+    glGenBuffers(1, &mVBO);
+    glGenBuffers(1, &mEBO);
 
-    glBindVertexArray(vao);
+    glBindVertexArray(mVAO);
 
-    glBindBuffer(GL_ARRAY_BUFFER, vbo);
-    glBufferData(GL_ARRAY_BUFFER, bufferSpecs.sizeofVertices, bufferSpecs.pVertices, GL_STATIC_DRAW);
+    glBindBuffer(GL_ARRAY_BUFFER, mVBO);
+    glBufferData(GL_ARRAY_BUFFER, mBufferSpecs.sizeofVertices, mBufferSpecs.pVertices, GL_STATIC_DRAW);
 
-    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ibo);
-    glBufferData(GL_ELEMENT_ARRAY_BUFFER, bufferSpecs.sizeofIndices, bufferSpecs.pIndices, GL_STATIC_DRAW);
+    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, mEBO);
+    glBufferData(GL_ELEMENT_ARRAY_BUFFER, mBufferSpecs.sizeofIndices, mBufferSpecs.pIndices, GL_STATIC_DRAW);
 
     glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0);
     glEnableVertexAttribArray(0);
@@ -36,22 +36,22 @@ b8 Buffer::init(BufferSpecification _bufferSpecs) {
 
 
 void Buffer::close() {
-    glDeleteVertexArrays(1, &vao);
-    glDeleteBuffers(1, &vbo);
-    glDeleteBuffers(1, &ibo);
+    glDeleteVertexArrays(1, &mVAO);
+    glDeleteBuffers(1, &mVBO);
+    glDeleteBuffers(1, &mEBO);
     LLOG("Buffer closed!");
 }
 
 
 void Buffer::use() const {
-    glBindVertexArray(vao);
-    glBindBuffer(GL_ARRAY_BUFFER, vbo);
-    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ibo);
+    glBindVertexArray(mVAO);
+    glBindBuffer(GL_ARRAY_BUFFER, mVBO);
+    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, mEBO);
 }
 
 
 const BufferSpecification& Buffer::getSpecs() const {
-    return bufferSpecs;
+    return mBufferSpecs;
 }
 
 

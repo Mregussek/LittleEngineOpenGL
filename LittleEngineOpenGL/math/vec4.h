@@ -26,6 +26,9 @@ struct vec4 {
     b8 operator==(vec4 other) const;
     b8 operator!=(vec4 other) const;
 
+    static vec4 random();
+    static vec4 random(f32 min, f32 max);
+
 };
 
 

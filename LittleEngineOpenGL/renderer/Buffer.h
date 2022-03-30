@@ -34,10 +34,10 @@ public:
 
 private:
 
-	BufferSpecification bufferSpecs;
-	u32 vao;
-	u32 vbo;
-	u32 ibo;
+	BufferSpecification mBufferSpecs;
+	u32 mVAO;
+	u32 mVBO;
+	u32 mEBO;
 
 };
 

@@ -33,7 +33,7 @@ public:
 
 private:
 
-	InputSpecification inputSpecs;
+	InputSpecification mInputSpecs;
 
 };
 
