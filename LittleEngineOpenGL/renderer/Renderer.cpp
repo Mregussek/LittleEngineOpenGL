@@ -2,7 +2,7 @@
 #include "Renderer.h"
 #include "Shader.h"
 #include "Buffer.h"
-#include "models/Mesh.h"
+#include "Mesh.h"
 
 
 namespace le

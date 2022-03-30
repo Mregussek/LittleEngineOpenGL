@@ -83,7 +83,7 @@
     <ClInclude Include="renderer\Camera.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="models\Mesh.h">
+    <ClInclude Include="renderer\Mesh.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

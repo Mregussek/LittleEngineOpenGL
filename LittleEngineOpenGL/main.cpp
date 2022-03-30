@@ -10,7 +10,7 @@
 #include "renderer/Shader.h"
 #include "renderer/Buffer.h"
 #include "renderer/Camera.h"
-#include "models/Mesh.h"
+#include "renderer/Mesh.h"
 
 
 auto main() -> i32 {
