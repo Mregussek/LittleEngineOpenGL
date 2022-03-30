@@ -5,10 +5,22 @@
 
 #include "includes.h"
 #include "defines.h"
+#include "math/vec3.h"
+#include "math/vec4.h"
 
 
 namespace le
 {
+
+
+struct MeshSpecification {
+
+    color4 color;
+    vec3 position;
+    vec3 rotation;
+    f32(*rotateFunc)();
+
+};
 
 
 class Mesh {

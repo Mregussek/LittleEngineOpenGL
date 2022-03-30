@@ -16,6 +16,7 @@ class Model;
 class Shader;
 class Camera;
 class Buffer;
+struct MeshSpecification;
 
 
 struct RendererSpecification {
@@ -29,8 +30,9 @@ struct RendererSpecification {
 struct RenderModelSpecification {
 	
 	Shader* pShader{ nullptr };
+	MeshSpecification* pMeshSpecs{ nullptr };
 	Buffer* pBuffer{ nullptr };
-	void(*pUniformSetupFunc)(Camera* pCamera, Shader* pShader);
+	void(*pUniformSetupFunc)(Camera* pCamera, Shader* pShader, MeshSpecification* pMeshSpecs);
 
 };
 
