@@ -36,7 +36,7 @@ b8 Window::init(WindowSpecification _windowSpecs) {
     }
     glfwMakeContextCurrent(pWindow);
     glfwSetFramebufferSizeCallback(pWindow, framebufferSizeCallback);
-    //glfwSetInputMode(pWindow, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
+    glfwSetInputMode(pWindow, GLFW_CURSOR, GLFW_CURSOR_NORMAL);
     LLOG("Window initialized!");
     return LTRUE;
 }
@@ -112,14 +112,14 @@ void mouseCallback(GLFWwindow* pWindow, f64 xposIn, f64 yposIn) {
     lastY = ypos;
 
     if (sCamera) {
-        // sCamera->ProcessMouseMovement(xoffset, yoffset);
+        sCamera->processMouseMovement(xoffset, yoffset);
     }
 }
 
 
 void scrollCallback(GLFWwindow* pWindow, f64 xoffset, f64 yoffset) {
     if (sCamera) {
-        // sCamera->ProcessMouseScroll((f32)yoffset);
+        sCamera->processMouseScroll((f32)yoffset);
     }
 }
 

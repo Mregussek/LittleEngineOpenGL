@@ -25,13 +25,15 @@ auto main() -> i32 {
     le::CameraSpecification camSpecs;
     camSpecs.aspectRatio = windowSpecs.aspectRatio;
     camSpecs.position = { 0.f, 0.f, 3.f };
-    camSpecs.up = { 0.f, 1.f, 0.f };
+    camSpecs.worldUp = { 0.f, 1.f, 0.f };
     camSpecs.front = { 0.f, 0.f, -1.f };
     camSpecs.yaw = -90.f;
     camSpecs.pitch = 0.f;
     camSpecs.movementSpeed = 2.5f;
     camSpecs.sensitivity = 0.1f;
     camSpecs.zoom = 45.f;
+    camSpecs.near = 0.1f;
+    camSpecs.far = 100.f;
 
     le::Camera camera;
     camera.init(camSpecs);
@@ -99,8 +101,8 @@ auto main() -> i32 {
     buffer.init(bufferSpecs);
 
     auto rotateObject = [](le::Camera* pCamera, le::Shader* pShader) {
-        const le::mat4 transform = pCamera->GetProjectionMatrix() *
-                                   pCamera->GetViewMatrix() *
+        const le::mat4 transform = pCamera->getProjectionMatrix() *
+                                   pCamera->getViewMatrix() *
                                    le::mat4::translation({ 1.f, 0.f, -2.f }) *
                                    le::mat4::rotation((f32)glfwGetTime(), { 0.3f, 0.5f, 1.f }) *
                                    le::mat4::scale({ 1.f, 1.f, 1.f });
