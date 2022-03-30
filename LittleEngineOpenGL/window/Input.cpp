@@ -10,13 +10,13 @@ namespace le
 
 b8 Input::init(InputSpecification _inputSpecs) {
 	inputSpecs = _inputSpecs;
-	std::cout << "Input initialized!\n";
+	LLOG("Input initialized!");
 	return LTRUE;
 }
 
 
 void Input::close() {
-	std::cout << "Input closed!\n";
+	LLOG("Input closed!");
 }
 
 

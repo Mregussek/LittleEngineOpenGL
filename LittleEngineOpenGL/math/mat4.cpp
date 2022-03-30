@@ -30,6 +30,12 @@ mat4 mat4::perspective(f32 fov, f32 aspectRatio, f32 near, f32 far) {
 	result.elements[3 + 2 * 4] = -1.f;
 	result.elements[2 + 3 * 4] = -((2.f * far * near) / (far - near));
 
+	// Result[0][0] = static_cast<T>(1) / (aspect * tanHalfFovy);
+	// Result[1][1] = static_cast<T>(1) / (tanHalfFovy);
+	// Result[2][2] = -(zFar + zNear) / (zFar - zNear);
+	// Result[2][3] = -static_cast<T>(1);
+	// Result[3][2] = -(static_cast<T>(2) * zFar * zNear) / (zFar - zNear);
+
 	return result;
 }
 
@@ -42,21 +48,38 @@ mat4 mat4::lookAt(vec3 eye, vec3 center, vec3 y) {
 	mat4 rtn{ 1.f };
 
 	rtn[0 + 0 * 4] = side.x;
-	rtn[1 + 0 * 4] = up.x;
-	rtn[2 + 0 * 4] = -fwd.x;
-	rtn[3 + 0 * 4] = 0.f;
 	rtn[0 + 1 * 4] = side.y;
-	rtn[1 + 1 * 4] = up.y;
-	rtn[2 + 1 * 4] = -fwd.y;
-	rtn[3 + 1 * 4] = 0.f;
 	rtn[0 + 2 * 4] = side.z;
+
+	rtn[1 + 0 * 4] = up.x;
+	rtn[1 + 1 * 4] = up.y;
 	rtn[1 + 2 * 4] = up.z;
+
+	rtn[2 + 0 * 4] = -fwd.x;
+	rtn[2 + 1 * 4] = -fwd.y;
 	rtn[2 + 2 * 4] = -fwd.z;
-	rtn[3 + 2 * 4] = 0.f;
+	
 	rtn[0 + 3 * 4] = -vec3::dot(side, eye);
 	rtn[1 + 3 * 4] = -vec3::dot(up, eye);
 	rtn[2 + 3 * 4] = vec3::dot(fwd, eye);
+	
+	rtn[3 + 0 * 4] = 0.f;
+	rtn[3 + 1 * 4] = 0.f;
+	rtn[3 + 2 * 4] = 0.f;
 	rtn[3 + 3 * 4] = 1.f;
+
+	//rtn[0 + 0 * 4] = side.x;
+	//rtn[0 + 1 * 4] = up.x;
+	//rtn[0 + 2 * 4] = -fwd.x;
+	//rtn[1 + 0 * 4] = side.y;
+	//rtn[1 + 1 * 4] = up.y;
+	//rtn[1 + 2 * 4] = -fwd.y;
+	//rtn[2 + 0 * 4] = side.z;
+	//rtn[2 + 1 * 4] = up.z;
+	//rtn[2 + 2 * 4] = -fwd.z;
+	//rtn[3 + 0 * 4] = -vec3::dot(side, eye);
+	//rtn[3 + 1 * 4] = -vec3::dot(up, eye);
+	//rtn[3 + 2 * 4] = vec3::dot(fwd, eye);
 
 	return rtn;
 }

@@ -29,7 +29,7 @@ f32 vec3::dot(vec3 a, vec3 b) {
 
 
 f32 vec3::length(vec3 v) {
-	return std::sqrt(vec3::dot(v, v));
+	return sqrt(vec3::dot(v, v));
 }
 
 

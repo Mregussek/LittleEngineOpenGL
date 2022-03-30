@@ -9,6 +9,11 @@
 #include "math/mat4.h"
 
 
+#include <glm/glm.hpp>
+#include <glm/gtc/matrix_transform.hpp>
+#include <glm/gtc/type_ptr.hpp>
+
+
 namespace le
 {
 
@@ -23,9 +28,9 @@ enum class CameraMovement {
 
 struct CameraSpecification {
 
-    vec3 position{ 0.f, 0.f, 0.f };
-    vec3 up{ 0.f, 1.f, 0.f };
-    vec3 front{ 0.f, 0.f, -1.f };
+    glm::vec3 position{ 0.f, 0.f, 0.f };
+    glm::vec3 up{ 0.f, 1.f, 0.f };
+    glm::vec3 front{ 0.f, 0.f, -1.f };
 
     f32 yaw{ -90.f };
     f32 pitch{ 0.0f };
@@ -56,11 +61,16 @@ public:
     }
 
     mat4 GetViewMatrix() {
-        return mat4::lookAt(Position, Position + Front, Up);
+        //return glm::lookAt(Position, Position + Front, Up);
+        const vec3 pos{ Position.x, Position.y, Position.z };
+        const vec3 fro{ Front.x, Front.y, Front.z };
+        const vec3 up{ Up.x, Up.y, Up.z };
+        return mat4::lookAt(pos, pos + fro, up);
     }
 
     mat4 GetProjectionMatrix() {
-        return mat4::perspective(LDEG2RAD(Zoom), aspectRatio, 0.1f, 100.0f);
+        //return glm::perspective(glm::radians(Zoom), aspectRatio, 0.1f, 100.0f);
+        return mat4::perspective(LDEG2RAD(Zoom), aspectRatio, 0.1f, 100.f);
     }
 
     void ProcessKeyboard(CameraMovement direction, f32 deltaTime) {
@@ -106,27 +116,26 @@ public:
         }
     }
 
-private:
+public:
 
     void updateCameraVectors() {
-        const vec3 front{
-            cos(LDEG2RAD(Yaw)) * cos(LDEG2RAD(Pitch)),
-            sin(LDEG2RAD(Pitch)),
-            sin(LDEG2RAD(Yaw)) * cos(LDEG2RAD(Pitch))
-        };
-        Front = vec3::normalize(front);
-        Right = vec3::normalize(vec3::cross(Front, WorldUp));
-        Up = vec3::normalize(vec3::cross(Right, Front));
+        glm::vec3 front;
+        front.x = cos(glm::radians(Yaw)) * cos(glm::radians(Pitch));
+        front.y = sin(glm::radians(Pitch));
+        front.z = sin(glm::radians(Yaw)) * cos(glm::radians(Pitch));
+        Front = glm::normalize(front);
+        Right = glm::normalize(glm::cross(Front, WorldUp));
+        Up = glm::normalize(glm::cross(Right, Front));
     }
 
 
     CameraSpecification camSpecs;
 
-    vec3 Position;
-    vec3 Front;
-    vec3 Up;
-    vec3 Right;
-    vec3 WorldUp;
+    glm::vec3 Position;
+    glm::vec3 Front;
+    glm::vec3 Up;
+    glm::vec3 Right;
+    glm::vec3 WorldUp;
 
     f32 Yaw;
     f32 Pitch;

@@ -11,11 +11,11 @@ namespace le
 b8 Renderer::init(RendererSpecification _renderSpecs) {
     renderSpecs = _renderSpecs;
     if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress)) {
-        std::cout << "Failed to initialize GLAD" << std::endl;
+        LLOG("Failed to initialize GLAD");
         return LFALSE;
     }
     glEnable(GL_DEPTH_TEST);
-    std::cout << "Renderer initialized!\n";
+    LLOG("Renderer initialized!");
     return LTRUE;
 }
 

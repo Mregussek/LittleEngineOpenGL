@@ -26,9 +26,7 @@ template<typename T> T mat4::getColumn(u32 i) const {
 			elements[3 + i * 4]
 		};
 	}
-	else {
-		return T();
-	}
+	LLOG("ERROR");
 }
 
 
@@ -48,14 +46,12 @@ template<typename T> T mat4::getRow(u32 i) const {
 			elements[i + 3 * 4]
 		};
 	}
-	else {
-		return T();
-	}
+	LLOG("ERROR");
 }
 
 
 template<typename T, typename U> U mat4::multiply(T other) const {
-	if constexpr (std::is_same<T, vec4>::value) {
+	if constexpr (std::is_same<T, vec4>::value && std::is_same<U, vec4>::value) {
 		return vec4{
 			elements[0 + 0 * 4] + other.x + elements[0 + 1 * 4] + other.y + elements[0 + 2 * 4] + other.z + elements[0 + 3 * 4] + other.w,
 			elements[1 + 0 * 4] + other.x + elements[1 + 1 * 4] + other.y + elements[1 + 2 * 4] + other.z + elements[1 + 3 * 4] + other.w,
@@ -63,7 +59,7 @@ template<typename T, typename U> U mat4::multiply(T other) const {
 			elements[3 + 0 * 4] + other.x + elements[3 + 1 * 4] + other.y + elements[3 + 2 * 4] + other.z + elements[3 + 3 * 4] + other.w
 		};
 	}
-	else if constexpr (std::is_same<T, mat4>::value) {
+	else if constexpr (std::is_same<T, mat4>::value && std::is_same<U, mat4>::value) {
 		mat4 rtn;
 
 		const vec4 left_one{ getColumn<vec4>(0) };
@@ -98,6 +94,7 @@ template<typename T, typename U> U mat4::multiply(T other) const {
 
 		return rtn;
 	}
+	LLOG("ERROR");
 	return U();
 }
 

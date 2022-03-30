@@ -32,6 +32,7 @@ public:
 	void setVec4(const char* name, const vec4& value) const;
 	void setVec4(const char* name, f32 x, f32 y, f32 z, f32 w) const;
 	void setMat4(const char* name, const mat4& mat) const;
+	void setMat4(const char* name, const f32* mat) const;
 
 private:
 

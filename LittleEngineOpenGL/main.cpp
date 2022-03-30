@@ -12,18 +12,46 @@
 #include "renderer/Camera.h"
 
 
+#include <glm/glm.hpp>
+#include <glm/gtc/matrix_transform.hpp>
+#include <glm/gtc/type_ptr.hpp>
+
+
+static glm::mat4 convert(const le::mat4& m) {
+    glm::mat4 rtn{
+        m[0 + 0 * 4], m[1 + 0 * 4], m[2 + 0 * 4], m[3 + 0 * 4],
+        m[0 + 1 * 4], m[1 + 1 * 4], m[2 + 1 * 4], m[3 + 1 * 4],
+        m[0 + 2 * 4], m[1 + 2 * 4], m[2 + 2 * 4], m[3 + 2 * 4],
+        m[0 + 3 * 4], m[1 + 3 * 4], m[2 + 3 * 4], m[3 + 3 * 4]
+    };
+    //rtn = {
+    //    m[0 + 0 * 4], m[0 + 1 * 4], m[0 + 2 * 4], m[0 + 3 * 4],
+    //    m[1 + 0 * 4], m[1 + 1 * 4], m[1 + 2 * 4], m[1 + 3 * 4],
+    //    m[2 + 0 * 4], m[2 + 1 * 4], m[2 + 2 * 4], m[2 + 3 * 4],
+    //    m[3 + 0 * 4], m[3 + 1 * 4], m[3 + 2 * 4], m[3 + 3 * 4]
+    //};
+    return rtn;
+}
+
+
+static glm::vec3 convert(le::vec3 v) {
+    return { v.x, v.y, v.z };
+}
+
+
 auto main() -> i32 {
     le::WindowSpecification windowSpecs;
     windowSpecs.width = 800;
     windowSpecs.height = 600;
     windowSpecs.name = "LittleEngineOpenGL v0.1 OpenGL 4.6.0";
+    windowSpecs.aspectRatio = 800.f / 600.f;
 
     le::Window window;
     window.init(windowSpecs);
 
     le::CameraSpecification camSpecs;
-    camSpecs.aspectRatio = (f32)windowSpecs.width / (f32)windowSpecs.height;
-    camSpecs.position = { 0.f, 0.f, 1.f };
+    camSpecs.aspectRatio = windowSpecs.aspectRatio;
+    camSpecs.position = { 0.f, 0.f, 3.f };
     camSpecs.up = { 0.f, 1.f, 0.f };
     camSpecs.front = { 0.f, 0.f, -1.f };
     camSpecs.yaw = -90.f;
@@ -98,12 +126,13 @@ auto main() -> i32 {
     buffer.init(bufferSpecs);
 
     auto rotateObject = [](le::Camera* pCamera, le::Shader* pShader) {
-        const le::mat4 p{ pCamera->GetProjectionMatrix() };
-        const le::mat4 v{ pCamera->GetViewMatrix() };
-        const le::mat4 t{ le::mat4::translation({ 0.f, 0.f, -1.f }) };
-        const le::mat4 r{ le::mat4::rotation((f32)glfwGetTime(), { 0.f, 0.f, 1.f }) };
-        const le::mat4 calc{ r };
-        pShader->setMat4("transform", calc);
+        const glm::mat4 p = convert(pCamera->GetProjectionMatrix());
+        //const glm::mat4 p = glm::perspective(glm::radians(pCamera->Zoom), pCamera->aspectRatio, 0.1f, 100.0f);
+        //glm::mat4 v = convert(pCamera->GetViewMatrix());
+        glm::mat4 v = glm::lookAt(pCamera->Position, pCamera->Position + pCamera->Front, pCamera->Up);
+        const glm::mat4 t = glm::translate(glm::mat4(1.f), { 1.f, 0.f, -2.f });
+        const glm::mat4 r = glm::rotate(glm::mat4(1.f), (f32)glfwGetTime(), { 0.3f, 0.5f, 1.f });
+        pShader->setMat4("transform", glm::value_ptr(p * v * t * r));
     };
 
     while (!window.isGoingToClose()) {

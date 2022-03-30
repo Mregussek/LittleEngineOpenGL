@@ -116,7 +116,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(SolutionDir)\LittleEngineOpenGL;$(SolutionDir)\LittleEngineOpenGL\3rdparty\glad\include;$(SolutionDir)\LittleEngineOpenGL\3rdparty\glfw-3.3.6\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)\LittleEngineOpenGL\3rdparty\glm-master;$(SolutionDir)\LittleEngineOpenGL;$(SolutionDir)\LittleEngineOpenGL\3rdparty\glad\include;$(SolutionDir)\LittleEngineOpenGL\3rdparty\glfw-3.3.6\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <LanguageStandard>stdcpp20</LanguageStandard>
     </ClCompile>
     <Link>
@@ -134,7 +134,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(SolutionDir)\LittleEngineOpenGL;$(SolutionDir)\LittleEngineOpenGL\3rdparty\glad\include;$(SolutionDir)\LittleEngineOpenGL\3rdparty\glfw-3.3.6\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)\LittleEngineOpenGL\3rdparty\glm-master;$(SolutionDir)\LittleEngineOpenGL;$(SolutionDir)\LittleEngineOpenGL\3rdparty\glad\include;$(SolutionDir)\LittleEngineOpenGL\3rdparty\glfw-3.3.6\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <LanguageStandard>stdcpp20</LanguageStandard>
     </ClCompile>
     <Link>

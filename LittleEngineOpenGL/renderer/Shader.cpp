@@ -34,7 +34,7 @@ b8 Shader::init() {
     glGetShaderiv(vertexShader, GL_COMPILE_STATUS, &success);
     if (!success) {
         glGetShaderInfoLog(vertexShader, 512, nullptr, infoLog);
-        std::cout << "ERROR::SHADER::VERTEX::COMPILATION_FAILED\n" << infoLog << std::endl;
+        LLOG("ERROR::SHADER::VERTEX::COMPILATION_FAILED " + std::string(infoLog));
         return LFALSE;
     }
 
@@ -44,7 +44,7 @@ b8 Shader::init() {
     glGetShaderiv(fragmentShader, GL_COMPILE_STATUS, &success);
     if (!success) {
         glGetShaderInfoLog(fragmentShader, 512, nullptr, infoLog);
-        std::cout << "ERROR::SHADER::FRAGMENT::COMPILATION_FAILED\n" << infoLog << std::endl;
+        LLOG("ERROR::SHADER::FRAGMENT::COMPILATION_FAILED " + std::string(infoLog));
         return LFALSE;
     }
 
@@ -55,19 +55,19 @@ b8 Shader::init() {
     glGetProgramiv(shaderProgram, GL_LINK_STATUS, &success);
     if (!success) {
         glGetProgramInfoLog(shaderProgram, 512, nullptr, infoLog);
-        std::cout << "ERROR::SHADER::PROGRAM::LINKING_FAILED\n" << infoLog << std::endl;
+        LLOG("ERROR::SHADER::PROGRAM::LINKING_FAILED " + std::string(infoLog));
         return LFALSE;
     }
     glDeleteShader(vertexShader);
     glDeleteShader(fragmentShader);
-    std::cout << "Shader initialized!\n";
+    LLOG("Shader initialized!");
     return LTRUE;
 }
 
 
 void Shader::close() {
     glDeleteProgram(shaderProgram);
-    std::cout << "Shader closed!\n";
+    LLOG("Shader closed!");
 }
 
 
@@ -113,6 +113,11 @@ void Shader::setVec4(const char* name, f32 x, f32 y, f32 z, f32 w) const {
 
 void Shader::setMat4(const char* name, const mat4& mat) const {
     glUniformMatrix4fv(glGetUniformLocation(shaderProgram, name), 1, GL_FALSE, &mat.elements[0]);
+}
+
+
+void Shader::setMat4(const char* name, const f32* mat) const {
+    glUniformMatrix4fv(glGetUniformLocation(shaderProgram, name), 1, GL_FALSE, mat);
 }
 
 

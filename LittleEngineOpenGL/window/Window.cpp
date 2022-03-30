@@ -30,21 +30,21 @@ b8 Window::init(WindowSpecification _windowSpecs) {
     
     pWindow = glfwCreateWindow(windowSpecs.width, windowSpecs.height, windowSpecs.name.c_str(), nullptr, nullptr);
     if (!pWindow) {
-        std::cout << "Failed to create GLFW window\n";
+        LLOG("Failed to create GLFW window");
         glfwTerminate();
         return LFALSE;
     }
     glfwMakeContextCurrent(pWindow);
     glfwSetFramebufferSizeCallback(pWindow, framebufferSizeCallback);
-    glfwSetInputMode(pWindow, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
-    std::cout << "Window initialized!\n";
+    //glfwSetInputMode(pWindow, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
+    LLOG("Window initialized!");
     return LTRUE;
 }
 
 
 void Window::close() {
     glfwTerminate();
-    std::cout << "Window closed!\n";
+    LLOG("Window closed!");
 }
 
 
