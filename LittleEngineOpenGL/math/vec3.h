@@ -55,6 +55,7 @@ vec3 operator/(f32 left, vec3 right);
 using color3 = vec3;
 using point3 = vec3;
 using vector3 = vec3;
+using rotation3 = vec3;
 
 
 }

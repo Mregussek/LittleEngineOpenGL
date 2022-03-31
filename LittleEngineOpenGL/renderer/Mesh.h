@@ -16,8 +16,8 @@ namespace le
 struct MeshSpecification {
 
     color4 color;
-    vec3 position;
-    vec3 rotation;
+    point3 position;
+    rotation3 rotation;
     f32(*rotateFunc)();
 
 };

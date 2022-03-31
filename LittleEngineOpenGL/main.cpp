@@ -11,6 +11,7 @@
 #include "renderer/Buffer.h"
 #include "renderer/Camera.h"
 #include "renderer/Mesh.h"
+#include "renderer/Colors.h"
 
 
 auto main() -> i32 {
@@ -74,11 +75,21 @@ auto main() -> i32 {
     auto rotateFunc = []()->f32 {
         return (f32)glfwGetTime();
     };
-    std::vector<le::MeshSpecification> meshSpecifications{
-        { le::color4{ 0.8f, 0.1f, 0.3f, 1.f }, le::vec3{ 1.f, 0.f, -2.f }, le::vec3{ 0.3f, 0.5f, 1.f }, rotateFunc },
-        { le::color4{ 0.1f, 0.8f, 0.3f, 1.f }, le::vec3{ -1.f, 0.f, -2.f }, { 0.3f, 0.5f, 1.f }, rotateFunc },
-        { le::color4{ 0.1f, 0.3f, 0.8f, 1.f }, le::vec3{ 0.f, 1.f, -3.f }, { 0.3f, 0.5f, 1.f }, rotateFunc }
+    auto generateMeshSpecification = [&rotateFunc](f32 x, f32 y, f32 z, le::ColorType ct)->std::vector<le::MeshSpecification> {
+        return {
+            { le::Colors::red(ct), le::point3{1.f + x, 0.f + y, -2.f + z}, le::rotation3{0.3f, 0.5f, 1.f}, rotateFunc},
+            { le::Colors::green(ct), le::point3{ -1.f + x, 0.f + y, -2.f + z }, le::rotation3{ 0.3f, 0.5f, 1.f }, rotateFunc },
+            { le::Colors::blue(ct), le::point3{ 0.f + x, 1.f + y, -3.f + z }, le::rotation3{ 0.3f, 0.5f, 1.f }, rotateFunc },
+            { le::Colors::yellow(ct), le::point3{ 0.f + x, -1.f + y, -2.f + z }, le::rotation3{ 0.3f, 0.5f, 1.f }, rotateFunc },
+            { le::Colors::orange(ct), le::point3{ 1.f + x, 2.f + y, -2.f + z }, le::rotation3{ 0.3f, 0.5f, 1.f }, rotateFunc },
+            { le::Colors::pink(ct), le::point3{ -1.f + x, 2.f + y, -2.f + z }, le::rotation3{ 0.3f, 0.5f, 1.f }, rotateFunc },
+        };
     };
+
+    auto meshSpecifications1{ generateMeshSpecification(0.f, 0.f, 0.f, le::ColorType::DEFAULT) };
+    auto meshSpecifications2{ generateMeshSpecification(6.f, 0.f, 0.f, le::ColorType::LIGHT) };
+    auto meshSpecifications3{ generateMeshSpecification(-6.f, 0.f, 0.f, le::ColorType::DARK) };
+
     auto transformObject = [](le::Camera* pCamera, le::Shader* pShader, le::MeshSpecification* pMeshSpecs) {
         const le::mat4 transform = pCamera->getProjectionMatrix() *
             pCamera->getViewMatrix() *
@@ -102,7 +113,15 @@ auto main() -> i32 {
         renderer.updateSpecs(renderSpecs);
 
         renderer.clearScreen();
-        for (auto& meshSpecs : meshSpecifications) {
+        for (auto& meshSpecs : meshSpecifications1) {
+            renderModelSpecs.pMeshSpecs = &meshSpecs;
+            renderer.draw(renderModelSpecs);
+        }
+        for (auto& meshSpecs : meshSpecifications2) {
+            renderModelSpecs.pMeshSpecs = &meshSpecs;
+            renderer.draw(renderModelSpecs);
+        }
+        for (auto& meshSpecs : meshSpecifications3) {
             renderModelSpecs.pMeshSpecs = &meshSpecs;
             renderer.draw(renderModelSpecs);
         }

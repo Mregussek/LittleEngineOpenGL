@@ -160,6 +160,7 @@
     <ClCompile Include="window\Window.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="renderer\Colors.h" />
     <ClInclude Include="renderer\Mesh.h" />
     <ClInclude Include="renderer\Camera.h" />
     <ClInclude Include="math\mat4.h" />
