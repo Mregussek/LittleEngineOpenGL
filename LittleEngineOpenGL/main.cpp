@@ -19,14 +19,14 @@ auto main() -> i32 {
     windowSpecs.width = 800;
     windowSpecs.height = 600;
     windowSpecs.name = "LittleEngineOpenGL v0.1 OpenGL 4.6.0";
-    windowSpecs.aspectRatio = 800.f / 600.f;
+    windowSpecs.aspectRatio = (f32)windowSpecs.width / (f32)windowSpecs.height;
 
     le::Window window;
     window.init(windowSpecs);
 
     le::CameraSpecification camSpecs;
     camSpecs.aspectRatio = windowSpecs.aspectRatio;
-    camSpecs.position = { 0.f, 0.f, 3.f };
+    camSpecs.position = { 7.5f, 0.f, 3.f };
     camSpecs.worldUp = { 0.f, 1.f, 0.f };
     camSpecs.front = { 0.f, 0.f, -1.f };
     camSpecs.yaw = -90.f;
