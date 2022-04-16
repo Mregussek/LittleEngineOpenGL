@@ -86,9 +86,11 @@ auto main() -> i32 {
         };
     };
 
-    auto meshSpecifications1{ generateMeshSpecification(0.f, 0.f, 0.f, le::ColorType::DEFAULT) };
-    auto meshSpecifications2{ generateMeshSpecification(6.f, 0.f, 0.f, le::ColorType::LIGHT) };
-    auto meshSpecifications3{ generateMeshSpecification(-6.f, 0.f, 0.f, le::ColorType::DARK) };
+    std::array<std::vector<le::MeshSpecification>, 3> meshSpecificationsArray{
+        generateMeshSpecification(0.f, 0.f, 0.f, le::ColorType::DEFAULT),
+        generateMeshSpecification(6.f, 0.f, 0.f, le::ColorType::LIGHT),
+        generateMeshSpecification(-6.f, 0.f, 0.f, le::ColorType::DARK)
+    };
 
     auto transformObject = [](le::Camera* pCamera, le::Shader* pShader, le::MeshSpecification* pMeshSpecs) {
         const le::mat4 transform = pCamera->getProjectionMatrix() *
@@ -104,6 +106,7 @@ auto main() -> i32 {
     renderModelSpecs.pShader = &shader;
     renderModelSpecs.pBuffer = &bufferCube;
     renderModelSpecs.pUniformSetupFunc = transformObject;
+    renderModelSpecs.pMeshSpecs = nullptr; // To be filled later...
 
     while (!window.isGoingToClose()) {
         window.updateDeltaTime();
@@ -113,17 +116,11 @@ auto main() -> i32 {
         renderer.updateSpecs(renderSpecs);
 
         renderer.clearScreen();
-        for (auto& meshSpecs : meshSpecifications1) {
-            renderModelSpecs.pMeshSpecs = &meshSpecs;
-            renderer.draw(renderModelSpecs);
-        }
-        for (auto& meshSpecs : meshSpecifications2) {
-            renderModelSpecs.pMeshSpecs = &meshSpecs;
-            renderer.draw(renderModelSpecs);
-        }
-        for (auto& meshSpecs : meshSpecifications3) {
-            renderModelSpecs.pMeshSpecs = &meshSpecs;
-            renderer.draw(renderModelSpecs);
+        for (auto& meshSpecs : meshSpecificationsArray) {
+            for (auto& concreteMeshSpecs : meshSpecs) {
+                renderModelSpecs.pMeshSpecs = &concreteMeshSpecs;
+                renderer.draw(renderModelSpecs);
+            }
         }
 
         window.swapBuffers();
