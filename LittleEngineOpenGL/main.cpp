@@ -13,6 +13,8 @@
 #include "renderer/Mesh.h"
 #include "renderer/Colors.h"
 
+#include "game/Entity.h"
+
 
 auto main() -> i32 {
     le::WindowSpecification windowSpecs;
@@ -92,7 +94,7 @@ auto main() -> i32 {
         generateMeshSpecification(-6.f, 0.f, 0.f, le::ColorType::DARK)
     };
 
-    auto transformObject = [](le::Camera* pCamera, le::Shader* pShader, le::MeshSpecification* pMeshSpecs) {
+    auto uniformSetupFunc = [](le::Camera* pCamera, le::Shader* pShader, le::MeshSpecification* pMeshSpecs) {
         const le::mat4 transform = pCamera->getProjectionMatrix() *
             pCamera->getViewMatrix() *
             le::mat4::translation(pMeshSpecs->position) *
@@ -105,7 +107,7 @@ auto main() -> i32 {
     le::RenderModelSpecification renderModelSpecs;
     renderModelSpecs.pShader = &shader;
     renderModelSpecs.pBuffer = &bufferCube;
-    renderModelSpecs.pUniformSetupFunc = transformObject;
+    renderModelSpecs.pUniformSetupFunc = uniformSetupFunc;
     renderModelSpecs.pMeshSpecs = nullptr; // To be filled later...
 
     while (!window.isGoingToClose()) {
