@@ -160,6 +160,8 @@
     <ClCompile Include="window\Window.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="game\Entity.h" />
+    <ClInclude Include="game\Place.h" />
     <ClInclude Include="renderer\Colors.h" />
     <ClInclude Include="renderer\Mesh.h" />
     <ClInclude Include="renderer\Camera.h" />

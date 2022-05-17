@@ -89,6 +89,12 @@
     <ClInclude Include="renderer\Colors.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="game\Entity.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="game\Place.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="math\vec3.inl">

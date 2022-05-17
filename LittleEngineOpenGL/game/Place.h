@@ -45,7 +45,7 @@ public:
 		}
 
 		for (u32 i = 0; i < placesCount; i++) {
-			add<TPlace>(startingPoint + separatePoint);
+			add<TPlace>(startingPoint + moveVector);
 		}
 	}
 
@@ -66,7 +66,7 @@ public:
 						nearestLength = length;
 						pPlace = &place;
 					}
-				}
+				},
 			place);
 		}
 
