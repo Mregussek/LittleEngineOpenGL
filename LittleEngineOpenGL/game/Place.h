@@ -25,8 +25,10 @@ struct RoadPlace : public Place { };
 
 struct StartPlace : public Place { };
 
+struct EndPlace : public Place { };
 
-using PlaceVariant = std::variant<ParkingPlace, RoadPlace, StartPlace>;
+
+using PlaceVariant = std::variant<ParkingPlace, RoadPlace, StartPlace, EndPlace>;
 
 
 class PlaceVector {
