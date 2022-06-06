@@ -61,15 +61,27 @@ auto main() -> i32 {
     shader.init();
     shader.use();
 
-    le::Cube cube;
+    le::ObjMesh obj;
+    const b8 loadedProperly{ obj.loadFile("resources/monkey.obj") };
+
+    le::CubeMesh cube;
+
+    auto fillBufferSpecs = [](le::BufferSpecification& specs, le::Mesh* pMesh) {
+        specs.pVertices = pMesh->vertices();
+        specs.countVertices = pMesh->countVertices();
+        specs.sizeofVertices = pMesh->sizeofVertices();
+        specs.pIndices = pMesh->indices();
+        specs.countIndices = pMesh->countIndices();
+        specs.sizeofIndices = pMesh->sizeofIndices();
+    };
 
     le::BufferSpecification bufferSpecsCube;
-    bufferSpecsCube.pVertices = cube.vertices();
-    bufferSpecsCube.countVertices = cube.countVertices();
-    bufferSpecsCube.sizeofVertices = cube.sizeofVertices();
-    bufferSpecsCube.pIndices = cube.indices();
-    bufferSpecsCube.countIndices = cube.countIndices();
-    bufferSpecsCube.sizeofIndices = cube.sizeofIndices();
+    if (loadedProperly) {
+        fillBufferSpecs(bufferSpecsCube, &obj);
+    }
+    else {
+        fillBufferSpecs(bufferSpecsCube, &cube);
+    }
 
     le::Buffer bufferCube;
     bufferCube.init(bufferSpecsCube);

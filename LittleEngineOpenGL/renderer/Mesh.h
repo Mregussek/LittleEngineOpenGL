@@ -37,7 +37,31 @@ public:
 };
 
 
-class Cube : public Mesh {
+class ObjMesh : public Mesh {
+public:
+
+    b8 loadFile(const char* path);
+
+    f32* vertices() override { return mVertices.data(); }
+    u32 countVertices() const override { return (u32)mVertices.size(); }
+    u32 sizeofVertices() const override { return (u32)(mVertices.size() * sizeof(decltype(mVertices[0]))); }
+
+    u32* indices() override { return mIndices.data(); }
+    u32 countIndices() const override { return (u32)mIndices.size(); }
+    u32 sizeofIndices() const override { return (u32)(mIndices.size() * sizeof(decltype(mIndices[0]))); }
+
+private:
+
+    void appendVertex(f32 x, f32 y, f32 z);
+    void appendTriangleIndices(u32 a, u32 b, u32 c);
+
+    std::vector<f32> mVertices{};
+    std::vector<u32> mIndices{};
+
+};
+
+
+class CubeMesh : public Mesh {
 public:
 
     f32* vertices() override { return mVertices.data(); }

@@ -11,7 +11,7 @@
 #define LRAD2DEG(x) (x * 57.29577951308f)
 
 
-#define LLOG(x) std::cout << __FILE__ << ':' << __LINE__ << ':' << __func__ << ": " << (x) << "\n"
+#define LLOG(x) std::cout << __FILE__ << ':' << __LINE__ << ':' << __func__ << ": " << (x) << '\n'
 
 
 #include <cstdint>

@@ -116,7 +116,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(SolutionDir)\LittleEngineOpenGL\3rdparty\glm-master;$(SolutionDir)\LittleEngineOpenGL;$(SolutionDir)\LittleEngineOpenGL\3rdparty\glad\include;$(SolutionDir)\LittleEngineOpenGL\3rdparty\glfw-3.3.6\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)\LittleEngineOpenGL\3rdparty\glm-master;$(SolutionDir)\LittleEngineOpenGL;$(SolutionDir)\LittleEngineOpenGL\3rdparty\glad\include;$(SolutionDir)\LittleEngineOpenGL\3rdparty\OBJ-Loader\Source;$(SolutionDir)\LittleEngineOpenGL\3rdparty\glfw-3.3.6\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <LanguageStandard>stdcpp20</LanguageStandard>
     </ClCompile>
     <Link>
@@ -148,11 +148,13 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="3rdparty\glad\src\glad.c" />
+    <ClCompile Include="3rdparty\OBJ-Loader\Source\OBJ_Loader.cpp" />
     <ClCompile Include="renderer\Camera.cpp" />
     <ClCompile Include="math\mat4.cpp" />
     <ClCompile Include="math\vec4.cpp" />
     <ClCompile Include="renderer\Buffer.cpp" />
     <ClCompile Include="math\vec3.cpp" />
+    <ClCompile Include="renderer\Mesh.cpp" />
     <ClCompile Include="window\Input.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="renderer\Renderer.cpp" />
@@ -160,6 +162,7 @@
     <ClCompile Include="window\Window.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="3rdparty\OBJ-Loader\Source\OBJ_Loader.h" />
     <ClInclude Include="game\Entity.h" />
     <ClInclude Include="game\Place.h" />
     <ClInclude Include="renderer\Colors.h" />
