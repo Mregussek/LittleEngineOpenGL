@@ -51,7 +51,7 @@
     <ClCompile Include="renderer\Mesh.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="3rdparty\OBJ-Loader\Source\OBJ_Loader.cpp">
+    <ClCompile Include="3rdparty\OBJ_Loader\Source\OBJ_Loader.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -101,7 +101,7 @@
     <ClInclude Include="game\Place.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="3rdparty\OBJ-Loader\Source\OBJ_Loader.h">
+    <ClInclude Include="3rdparty\OBJ_Loader\Source\OBJ_Loader.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

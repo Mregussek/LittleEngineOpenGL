@@ -76,12 +76,7 @@ auto main() -> i32 {
     };
 
     le::BufferSpecification bufferSpecsCube;
-    if (loadedProperly) {
-        fillBufferSpecs(bufferSpecsCube, &obj);
-    }
-    else {
-        fillBufferSpecs(bufferSpecsCube, &cube);
-    }
+    fillBufferSpecs(bufferSpecsCube, loadedProperly ? (le::Mesh*)&obj : (le::Mesh*)&cube);
 
     le::Buffer bufferCube;
     bufferCube.init(bufferSpecsCube);
