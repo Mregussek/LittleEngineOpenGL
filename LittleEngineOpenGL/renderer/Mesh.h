@@ -54,7 +54,7 @@ public:
 
 private:
 
-    void appendVertex(f32 x, f32 y, f32 z);
+    void appendVertex(vec3 position, vec3 normal);
     void appendTriangleIndices(u32 a, u32 b, u32 c);
 
     std::vector<f32> mVertices{};
