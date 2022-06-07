@@ -35,7 +35,10 @@ void Renderer::clearScreen() const {
 
 void Renderer::draw(const RenderModelSpecification& renderModelSpecs) const {
     renderModelSpecs.pShader->use();
-    renderModelSpecs.pUniformSetupFunc(mRenderSpecs.pCamera, renderModelSpecs.pShader, renderModelSpecs.pMeshSpecs);
+    renderModelSpecs.pUniformSetupFunc(mRenderSpecs.pCamera,
+                                       renderModelSpecs.pShader,
+                                       renderModelSpecs.pMeshSpecs,
+                                       renderModelSpecs.pPointLight);
     renderModelSpecs.pBuffer->use();
     glDrawElements(GL_TRIANGLES, renderModelSpecs.pBuffer->getSpecs().countIndices, GL_UNSIGNED_INT, 0);
 }

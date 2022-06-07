@@ -12,6 +12,7 @@
 #include "renderer/Camera.h"
 #include "renderer/Mesh.h"
 #include "renderer/Colors.h"
+#include "renderer/PointLight.h"
 
 #include "game/Entity.h"
 
@@ -72,6 +73,12 @@ auto main() -> i32 {
     shader.init(shaderSpecs);
     shader.use();
 
+    le::PointLightSpecification pointLightSpecs;
+    pointLightSpecs.position = { 0.f, 2.f, 1.f };
+    pointLightSpecs.color = { 1.f, 1.f, 1.f };
+
+    le::PointLight pointLight(pointLightSpecs);
+
     std::vector<const char*> parkingFiles{
         "resources/connector_01.obj",
         "resources/connector_02.obj",
@@ -127,19 +134,26 @@ auto main() -> i32 {
         generateMeshSpecification(0.f, 6.f, 0.f, le::ColorType::DEFAULT)
     };
 
-    auto uniformSetupFunc = [](le::Camera* pCamera, le::Shader* pShader, le::MeshSpecification* pMeshSpecs) {
-        const le::mat4 transform = pCamera->getProjectionMatrix() *
-            pCamera->getViewMatrix() *
+    auto uniformSetupFunc = [](le::Camera* pCamera, le::Shader* pShader, le::MeshSpecification* pMeshSpecs,
+                               le::PointLight* pPointLight) {
+        const le::mat4 objectMatrix =
             le::mat4::translation(pMeshSpecs->position) *
             le::mat4::rotation(pMeshSpecs->rotateFunc(), pMeshSpecs->rotation) *
             le::mat4::scale({ 0.2f, 0.2f, 0.2f });
-        pShader->setMat4("uTransform", transform);
+        const le::mat4 objectSeenThroughCameraMatrix =
+            pCamera->getProjectionMatrix() *
+            pCamera->getViewMatrix() *
+            pCamera->getModelMartix() *
+            objectMatrix;
+        pShader->setMat4("uModel", pCamera->getModelMartix());
+        pShader->setMat4("uTransform", objectSeenThroughCameraMatrix);
         pShader->setVec4("uColor", pMeshSpecs->color);
     };
 
     le::RenderModelSpecification renderModelSpecs;
     renderModelSpecs.pShader = &shader;
     renderModelSpecs.pBuffer = nullptr; // to be filled later...
+    renderModelSpecs.pPointLight = &pointLight;
     renderModelSpecs.pUniformSetupFunc = uniformSetupFunc;
     renderModelSpecs.pMeshSpecs = nullptr; // To be filled later...
 

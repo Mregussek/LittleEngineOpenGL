@@ -43,13 +43,12 @@ struct CameraSpecification {
 class Camera {
 public:
 
-    void init(CameraSpecification _camSpecs) {
-        mCameraSpecs = _camSpecs;
-        updateCameraVectors();
-    }
+    void init(CameraSpecification _camSpecs);
 
+    mat4 getModelMartix() const;
     mat4 getViewMatrix() const;
     mat4 getProjectionMatrix() const;
+    vec3 getPositionVec() const;
 
     void processKeyboard(CameraMovement direction, f32 deltaTime);
     void processMouseMovement(f32 xoffset, f32 yoffset, b8 constrainPitch = LTRUE);

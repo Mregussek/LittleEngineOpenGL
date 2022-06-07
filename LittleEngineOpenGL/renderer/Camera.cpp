@@ -5,6 +5,16 @@
 namespace le
 {
 
+void Camera::init(CameraSpecification _camSpecs) {
+    mCameraSpecs = _camSpecs;
+    updateCameraVectors();
+}
+
+
+mat4 Camera::getModelMartix() const {
+    return mat4::identity();
+}
+
 
 mat4 Camera::getViewMatrix() const {
     return mat4::lookAt(mCameraSpecs.position,
@@ -18,6 +28,11 @@ mat4 Camera::getProjectionMatrix() const {
                              mCameraSpecs.aspectRatio,
                              mCameraSpecs.near,
                              mCameraSpecs.far);
+}
+
+
+vec3 Camera::getPositionVec() const {
+    return mCameraSpecs.position;
 }
 
 
