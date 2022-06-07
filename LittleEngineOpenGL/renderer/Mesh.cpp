@@ -1,5 +1,6 @@
 
 #include "Mesh.h"
+#include "filesystem/path.h"
 
 
 namespace le
@@ -8,6 +9,11 @@ namespace le
 
 b8 ObjMesh::loadFile(const char* path) {
     LLOG("Loading obj file...");
+    if (!Path::exists(path)) {
+        LLOG("Selected obj file does not exist!");
+        return LFALSE;
+    }
+
     objl::Loader Loader;
     const b8 loadedModelProperly{ Loader.LoadFile(std::string{ path }) };
     
