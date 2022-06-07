@@ -11,7 +11,7 @@ b8 ObjMesh::loadFile(const char* path) {
     LLOG("Loading obj file...");
     if (!Path::exists(path)) {
         LLOG("Selected obj file does not exist!");
-        return LFALSE;
+        return mLoaded = LFALSE;
     }
 
     objl::Loader Loader;
@@ -19,7 +19,7 @@ b8 ObjMesh::loadFile(const char* path) {
     
     if (!loadedModelProperly) {
         LLOG("Couldnt load properly obj file!");
-        return LFALSE;
+        return mLoaded = LFALSE;
     }
 
     for (u32 i = 0; i < Loader.LoadedMeshes.size(); i++) {
@@ -34,7 +34,12 @@ b8 ObjMesh::loadFile(const char* path) {
     }
 
     LLOG("Loaded properly obj file!");
-    return LTRUE;
+    return mLoaded = LTRUE;
+}
+
+
+b8 ObjMesh::loadedProperly() const {
+    return mLoaded;
 }
 
 

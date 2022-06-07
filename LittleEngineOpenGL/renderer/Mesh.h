@@ -42,6 +42,8 @@ public:
 
     b8 loadFile(const char* path);
 
+    b8 loadedProperly() const;
+
     f32* vertices() override { return mVertices.data(); }
     u32 countVertices() const override { return (u32)mVertices.size(); }
     u32 sizeofVertices() const override { return (u32)(mVertices.size() * sizeof(decltype(mVertices[0]))); }
@@ -57,6 +59,7 @@ private:
 
     std::vector<f32> mVertices{};
     std::vector<u32> mIndices{};
+    b8 mLoaded{ LFALSE };
 
 };
 

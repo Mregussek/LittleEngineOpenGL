@@ -72,8 +72,18 @@ auto main() -> i32 {
     shader.init(shaderSpecs);
     shader.use();
 
-    le::ObjMesh obj;
-    const b8 loadedProperly{ obj.loadFile("resources/monkey.obj") };
+    std::vector<const char*> parkingFiles{
+        "resources/connector_01.obj",
+        "resources/connector_02.obj",
+        "resources/parking_spot.obj",
+        "resources/road.obj"
+    };
+
+    std::vector<le::ObjMesh> parkingObj;
+    for (const auto& file : parkingFiles) {
+        auto& obj{ parkingObj.emplace_back() };
+        obj.loadFile(file);
+    }
 
     le::CubeMesh cube;
 
@@ -86,11 +96,15 @@ auto main() -> i32 {
         specs.sizeofIndices = pMesh->sizeofIndices();
     };
 
-    le::BufferSpecification bufferSpecsCube;
-    fillBufferSpecs(bufferSpecsCube, loadedProperly ? (le::Mesh*)&obj : (le::Mesh*)&cube);
+    std::vector<le::BufferSpecification> bufferSpecs;
+    std::vector<le::Buffer> buffer;
 
-    le::Buffer bufferCube;
-    bufferCube.init(bufferSpecsCube);
+    for (u32 i = 0; i < parkingFiles.size(); i++) {
+        auto& specs = bufferSpecs.emplace_back();
+        fillBufferSpecs(specs, parkingObj[i].loadedProperly() ? (le::Mesh*)&parkingObj[i] : (le::Mesh*)&cube);
+        auto& buf = buffer.emplace_back();
+        buf.init(specs);
+    }
 
     auto rotateFunc = []()->f32 {
         return (f32)glfwGetTime();
@@ -106,10 +120,11 @@ auto main() -> i32 {
         };
     };
 
-    std::array<std::vector<le::MeshSpecification>, 3> meshSpecificationsArray{
+    std::vector<std::vector<le::MeshSpecification>> meshSpecificationsArray{
         generateMeshSpecification(0.f, 0.f, 0.f, le::ColorType::DEFAULT),
         generateMeshSpecification(6.f, 0.f, 0.f, le::ColorType::LIGHT),
-        generateMeshSpecification(-6.f, 0.f, 0.f, le::ColorType::DARK)
+        generateMeshSpecification(-6.f, 0.f, 0.f, le::ColorType::DARK),
+        generateMeshSpecification(0.f, 6.f, 0.f, le::ColorType::DEFAULT)
     };
 
     auto uniformSetupFunc = [](le::Camera* pCamera, le::Shader* pShader, le::MeshSpecification* pMeshSpecs) {
@@ -117,14 +132,14 @@ auto main() -> i32 {
             pCamera->getViewMatrix() *
             le::mat4::translation(pMeshSpecs->position) *
             le::mat4::rotation(pMeshSpecs->rotateFunc(), pMeshSpecs->rotation) *
-            le::mat4::scale({ 1.f, 1.f, 1.f });
+            le::mat4::scale({ 0.2f, 0.2f, 0.2f });
         pShader->setMat4("uTransform", transform);
         pShader->setVec4("uColor", pMeshSpecs->color);
     };
 
     le::RenderModelSpecification renderModelSpecs;
     renderModelSpecs.pShader = &shader;
-    renderModelSpecs.pBuffer = &bufferCube;
+    renderModelSpecs.pBuffer = nullptr; // to be filled later...
     renderModelSpecs.pUniformSetupFunc = uniformSetupFunc;
     renderModelSpecs.pMeshSpecs = nullptr; // To be filled later...
 
@@ -136,8 +151,9 @@ auto main() -> i32 {
         renderer.updateSpecs(renderSpecs);
 
         renderer.clearScreen();
-        for (auto& meshSpecs : meshSpecificationsArray) {
-            for (auto& concreteMeshSpecs : meshSpecs) {
+        for (u32 i = 0; i < buffer.size(); i++) {
+            renderModelSpecs.pBuffer = &buffer[i];
+            for (auto& concreteMeshSpecs : meshSpecificationsArray[i]) {
                 renderModelSpecs.pMeshSpecs = &concreteMeshSpecs;
                 renderer.draw(renderModelSpecs);
             }
@@ -146,7 +162,9 @@ auto main() -> i32 {
         window.swapBuffers();
     }
 
-    bufferCube.close();
+    for (auto& buf : buffer) {
+        buf.close();
+    }
     shader.close();
     input.close();
     window.close();
