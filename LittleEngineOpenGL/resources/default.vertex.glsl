@@ -8,10 +8,11 @@ out vec3 vFragPosition;
 out vec3 vNormal;
 
 uniform mat4 uModel;
+uniform mat4 uObjectMatrix;
 uniform mat4 uTransform;
 
 void main() {
-    vFragPosition = vec3(uModel * vec4(inPosition, 1.0));
+    vFragPosition = vec3(uObjectMatrix * vec4(inPosition, 1.0));
     vNormal = mat3(transpose(inverse(uModel))) * inNormal;  
 
     gl_Position = uTransform * vec4(inPosition, 1.0);

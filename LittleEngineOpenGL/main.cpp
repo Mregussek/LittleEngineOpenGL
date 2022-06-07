@@ -74,7 +74,7 @@ auto main() -> i32 {
     shader.use();
 
     le::PointLightSpecification pointLightSpecs;
-    pointLightSpecs.position = { 0.f, 2.f, 1.f };
+    pointLightSpecs.position = { 4.f, 2.f, 1.f };
     pointLightSpecs.color = { 0.5f, 1.f, 0.5f };
 
     le::PointLight pointLight(pointLightSpecs);
@@ -148,6 +148,7 @@ auto main() -> i32 {
 
         // Vertex Uniforms
         pShader->setMat4("uModel", pCamera->getModelMartix());
+        pShader->setMat4("uObjectMatrix", objectMatrix);
         pShader->setMat4("uTransform", objectSeenThroughCameraMatrix);
         // Fragment Uniforms
         pShader->setVec4("uMeshColor", pMeshSpecs->color);
