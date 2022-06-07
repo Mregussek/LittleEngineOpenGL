@@ -176,6 +176,7 @@
     <ClInclude Include="defines.h" />
     <ClInclude Include="includes.h" />
     <ClInclude Include="math\vec3.h" />
+    <ClInclude Include="renderer\PointLight.h" />
     <ClInclude Include="window\Input.h" />
     <ClInclude Include="renderer\Renderer.h" />
     <ClInclude Include="renderer\Shader.h" />

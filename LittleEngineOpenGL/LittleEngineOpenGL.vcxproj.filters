@@ -110,6 +110,9 @@
     <ClInclude Include="filesystem\path.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="renderer\PointLight.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="math\vec3.inl">
