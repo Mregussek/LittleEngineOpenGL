@@ -54,6 +54,9 @@
     <ClCompile Include="3rdparty\OBJ_Loader\Source\OBJ_Loader.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="filesystem\path.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="defines.h">
@@ -102,6 +105,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="3rdparty\OBJ_Loader\Source\OBJ_Loader.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="filesystem\path.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

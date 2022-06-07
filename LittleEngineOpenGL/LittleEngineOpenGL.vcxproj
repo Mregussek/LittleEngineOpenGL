@@ -149,6 +149,7 @@
   <ItemGroup>
     <ClCompile Include="3rdparty\glad\src\glad.c" />
     <ClCompile Include="3rdparty\OBJ_Loader\Source\OBJ_Loader.cpp" />
+    <ClCompile Include="filesystem\path.cpp" />
     <ClCompile Include="renderer\Camera.cpp" />
     <ClCompile Include="math\mat4.cpp" />
     <ClCompile Include="math\vec4.cpp" />
@@ -163,6 +164,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="3rdparty\OBJ_Loader\Source\OBJ_Loader.h" />
+    <ClInclude Include="filesystem\path.h" />
     <ClInclude Include="game\Entity.h" />
     <ClInclude Include="game\Place.h" />
     <ClInclude Include="renderer\Colors.h" />

@@ -57,8 +57,19 @@ auto main() -> i32 {
     le::Renderer renderer;
     renderer.init(renderSpecs);
 
+    le::ShaderInfo vertexShader;
+    vertexShader.type = le::ShaderType::VERTEX;
+    vertexShader.path = "resources/default.vertex.glsl";
+
+    le::ShaderInfo fragmentShader;
+    fragmentShader.type = le::ShaderType::FRAGMENT;
+    fragmentShader.path = "resources/default.fragment.glsl";
+
+    le::ShaderSpecification shaderSpecs;
+    shaderSpecs.infos = { vertexShader, fragmentShader };
+
     le::Shader shader;
-    shader.init();
+    shader.init(shaderSpecs);
     shader.use();
 
     le::ObjMesh obj;

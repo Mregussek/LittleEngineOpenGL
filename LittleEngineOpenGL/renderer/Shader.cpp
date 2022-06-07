@@ -3,6 +3,7 @@
 #include "math/vec3.h"
 #include "math/vec4.h"
 #include "math/mat4.h"
+#include "filesystem/path.h"
 
 
 namespace le
@@ -24,6 +25,15 @@ const char* fragmentShaderSource = "#version 460 core\n"
     "}\n\0";
 
 
+static std::pair<u32, std::string> retrieveOpenGLShaderType(ShaderType type) {
+    switch (type) {
+    case ShaderType::VERTEX: return std::make_pair(GL_VERTEX_SHADER, "VERTEX");
+    case ShaderType::FRAGMENT: return std::make_pair(GL_FRAGMENT_SHADER, "FRAGMENT");
+    default: return std::make_pair(0, "NONE");
+    }
+}
+
+
 static b8 compileShader(u32 shaderType, std::string shaderTypeStr, const char* shaderSource, u32* pID) {
     i32 success;
 
@@ -42,28 +52,47 @@ static b8 compileShader(u32 shaderType, std::string shaderTypeStr, const char* s
 }
 
 
-b8 Shader::init() {
+static b8 attachShader(ShaderInfo& info, u32 shaderProgram) {
+    if (Path::exists(info.path.c_str())) {
+        LLOG("Attaching shader " + info.path + " ...");
+        std::string source;
+        Path::readFile(info.path.c_str(), &source);
+        auto [internalType, internalStr] = retrieveOpenGLShaderType(info.type);
+        b8 success{ compileShader(internalType, internalStr, source.c_str(), &info.id) };
+        if (success) {
+            glAttachShader(shaderProgram, info.id);
+            return LTRUE;
+        }
+        return LFALSE;
+    }
+    return LFALSE;
+}
+
+
+b8 Shader::init(ShaderSpecification shaderSpecs) {
+    mShaderSpecs = shaderSpecs;
+
     i32 success;
-    char infoLog[512];
-
-    u32 vertexShaderID;
-    compileShader(GL_VERTEX_SHADER, "VERTEX", vertexShaderSource, &vertexShaderID);
-
-    u32 fragmentShaderID;
-    compileShader(GL_FRAGMENT_SHADER, "FRAGMENT", fragmentShaderSource, &fragmentShaderID);
-
+    
     mShaderProgram = glCreateProgram();
-    glAttachShader(mShaderProgram, vertexShaderID);
-    glAttachShader(mShaderProgram, fragmentShaderID);
+
+    for (auto& info : mShaderSpecs.infos) {
+        attachShader(info, mShaderProgram);
+    }
+
     glLinkProgram(mShaderProgram);
     glGetProgramiv(mShaderProgram, GL_LINK_STATUS, &success);
     if (!success) {
+        char infoLog[512];
         glGetProgramInfoLog(mShaderProgram, 512, nullptr, infoLog);
         LLOG("ERROR::SHADER::PROGRAM::LINKING_FAILED " + std::string(infoLog));
         return LFALSE;
     }
-    glDeleteShader(vertexShaderID);
-    glDeleteShader(fragmentShaderID);
+
+    for (auto& info : mShaderSpecs.infos) {
+        glDeleteShader(info.id);
+    }
+
     LLOG("Shader initialized!");
     return LTRUE;
 }

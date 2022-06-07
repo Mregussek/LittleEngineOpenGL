@@ -61,8 +61,8 @@ public:
 
 
     CameraSpecification mCameraSpecs;
-    vec3 mUp;
-    vec3 mRight;
+    vec3 mUp{};
+    vec3 mRight{};
 
 };
 

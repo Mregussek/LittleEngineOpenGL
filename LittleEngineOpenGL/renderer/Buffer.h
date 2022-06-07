@@ -35,9 +35,9 @@ public:
 private:
 
 	BufferSpecification mBufferSpecs;
-	u32 mVAO;
-	u32 mVBO;
-	u32 mEBO;
+	u32 mVAO{};
+	u32 mVBO{};
+	u32 mEBO{};
 
 };
 

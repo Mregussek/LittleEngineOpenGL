@@ -16,10 +16,27 @@ struct vec4;
 struct mat4;
 
 
+enum class ShaderType {
+	NONE, VERTEX, FRAGMENT
+};
+
+
+struct ShaderInfo {
+	std::string path;
+	ShaderType type{ ShaderType::NONE };
+	u32 id{}; // will be filled as internal variable!
+};
+
+
+struct ShaderSpecification {
+	std::vector<ShaderInfo> infos;
+};
+
+
 class Shader {
 public:
 
-	b8 init();
+	b8 init(ShaderSpecification shaderSpecs);
 	void close();
 
 	void use() const;
@@ -36,6 +53,7 @@ public:
 
 private:
 
+	ShaderSpecification mShaderSpecs{};
 	u32 mShaderProgram{ 0 };
 
 };
