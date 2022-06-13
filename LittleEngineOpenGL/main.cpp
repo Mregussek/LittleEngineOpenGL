@@ -29,7 +29,7 @@ auto main() -> i32 {
 
     le::CameraSpecification camSpecs;
     camSpecs.aspectRatio = windowSpecs.aspectRatio;
-    camSpecs.position = { 7.5f, 0.f, 3.f };
+    camSpecs.position = { 0.5f, 0.f, 3.f };
     camSpecs.worldUp = { 0.f, 1.f, 0.f };
     camSpecs.front = { 0.f, 0.f, -1.f };
     camSpecs.yaw = -90.f;
@@ -74,7 +74,7 @@ auto main() -> i32 {
     shader.use();
 
     le::PointLightSpecification pointLightSpecs;
-    pointLightSpecs.position = { 4.f, 2.f, 1.f };
+    pointLightSpecs.position = { 2.f, 2.f, 1.f };
     pointLightSpecs.color = { 0.5f, 1.f, 0.5f };
 
     le::PointLight pointLight(pointLightSpecs);
@@ -123,7 +123,7 @@ auto main() -> i32 {
         const le::mat4 objectMatrix =
             le::mat4::translation(pMeshSpecs->position) *
             le::mat4::rotation(pMeshSpecs->rotateFunc(), pMeshSpecs->rotation) *
-            le::mat4::scale({ 0.2f, 0.2f, 0.2f });
+            le::mat4::scale(pMeshSpecs->scale);
         const le::mat4 objectSeenThroughCameraMatrix =
             pCamera->getProjectionMatrix() *
             pCamera->getViewMatrix() *
@@ -164,6 +164,9 @@ auto main() -> i32 {
             renderModelSpecs.pBuffer = bufferFactory.get(meshSpecs.type);
             renderModelSpecs.pMeshSpecs = &meshSpecs;
             
+            le::displayInfoAbout(renderModelSpecs.pBuffer);
+            le::displayInfoAbout(renderModelSpecs.pMeshSpecs);
+
             renderer.draw(renderModelSpecs);
         }
 

@@ -7,8 +7,8 @@ namespace le
 {
 
 static void displayBufferSpecs(const BufferSpecification& bufferSpecs) {
-    std::cout << "Vertices Size: " << bufferSpecs.countVertices << " Vertices Capacity: " << bufferSpecs.sizeofVertices << "\n";
-    std::cout << "Indices Size: " << bufferSpecs.countIndices << " Indices Capacity: " << bufferSpecs.sizeofIndices << "\n";
+    std::cout << "Vertices Size: " << bufferSpecs.countVertices << " Capacity: " << bufferSpecs.sizeofVertices << "\n";
+    std::cout << "Indices Size: " << bufferSpecs.countIndices << " Capacity: " << bufferSpecs.sizeofIndices << "\n";
 }
     
 
@@ -67,6 +67,7 @@ BufferType Buffer::getType() const {
 void displayInfoAbout(Buffer* pBuffer) {
     LLOG("Buffer Info...");
     std::cout << "BufferType: " << convertEnumToStr(pBuffer->getType()) << '\n';
+    displayBufferSpecs(pBuffer->getSpecs());
 }
 
 
