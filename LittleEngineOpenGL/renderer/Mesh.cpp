@@ -163,6 +163,7 @@ void displayInfoAbout(MeshRuntimeSpecification* pSpecs) {
     displayVec(pSpecs->rotation, "Rotation");
     displayVec(pSpecs->scale, "Scale");
     displayVec(pSpecs->color, "Color");
+    std::cout << "Angle: " << pSpecs->angle << '\n';
 }
 
 

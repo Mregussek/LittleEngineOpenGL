@@ -29,7 +29,7 @@ auto main() -> i32 {
 
     le::CameraSpecification camSpecs;
     camSpecs.aspectRatio = windowSpecs.aspectRatio;
-    camSpecs.position = { 0.f, 0.f, 3.f };
+    camSpecs.position = { 3.f, 2.f, 3.f };
     camSpecs.worldUp = { 0.f, 1.f, 0.f };
     camSpecs.front = { 0.f, 0.f, -1.f };
     camSpecs.yaw = -90.f;
@@ -97,8 +97,8 @@ auto main() -> i32 {
         pEntity->start();
     }
     
-    auto rotateFunc = []()->f32 {
-        return 0.f;
+    auto rotateFunc = [](f32 angle)->f32 {
+        return LDEG2RAD(angle);
     };
 
     const le::PlaceVector& placeVector{ parkingEntity.getPlaceVector() };
@@ -111,8 +111,9 @@ auto main() -> i32 {
         meshRunSpecs.position = pPlace->position;
         meshRunSpecs.rotation = pPlace->rotation;
         meshRunSpecs.scale = pPlace->scale;
-        meshRunSpecs.color = le::Colors::red(le::ColorType::DEFAULT);
+        meshRunSpecs.color = pPlace->color;
         meshRunSpecs.rotateFunc = rotateFunc;
+        meshRunSpecs.angle = pPlace->angle;
         meshRunSpecs.type = pPlace->getType();
         le::displayInfoAbout(&meshRunSpecs);
     }
@@ -122,7 +123,7 @@ auto main() -> i32 {
                                le::PointLight* pPointLight) {
         const le::mat4 objectMatrix =
             le::mat4::translation(pMeshSpecs->position) *
-            le::mat4::rotation(pMeshSpecs->rotateFunc(), pMeshSpecs->rotation) *
+            le::mat4::rotation(pMeshSpecs->rotateFunc(pMeshSpecs->angle), pMeshSpecs->rotation) *
             le::mat4::scale(pMeshSpecs->scale);
         const le::mat4 objectSeenThroughCameraMatrix =
             pCamera->getProjectionMatrix() *

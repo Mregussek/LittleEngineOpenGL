@@ -32,9 +32,11 @@ struct MeshRuntimeSpecification {
     rotation3 rotation;
     scale3 scale;
 
-    point3(*positionFunc)();
-    f32(*rotateFunc)();
-    scale3(*scaleFunc)();
+    point3(*positionFunc)() { nullptr };
+    f32(*rotateFunc)(f32) { nullptr };
+    scale3(*scaleFunc)() { nullptr };
+
+    f32 angle{ 0.f };
 
     MeshType type;
 

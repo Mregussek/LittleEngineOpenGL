@@ -15,9 +15,11 @@ namespace le
 
 struct Place {
 
+	color4 color{};
 	point3 position{};
 	rotation3 rotation{};
 	scale3 scale{};
+	f32 angle{ 0.f };
 
 	virtual MeshType getType() const { return MeshType::NONE; }
 
@@ -33,6 +35,7 @@ void displayInfoAbout(Place* pPlace) {
 	displayVec(pPlace->position, "Position");
 	displayVec(pPlace->rotation, "Rotation");
 	displayVec(pPlace->scale, "Scale");
+	std::cout << "Angle: " << pPlace->angle << '\n';
 }
 
 
@@ -75,11 +78,13 @@ class PlaceVector {
 public:
 
 	template<typename TPlace>
-	void add(point3 position, rotation3 rotation, scale3 scale) {
+	void add(point3 position, rotation3 rotation, scale3 scale, color4 color, f32 angle) {
 		TPlace* pPlace{ new TPlace };
 		pPlace->position = position;
 		pPlace->rotation = rotation;
 		pPlace->scale = scale;
+		pPlace->color = color;
+		pPlace->angle = angle;
 		mPlaces.push_back(pPlace);
 	}
 
