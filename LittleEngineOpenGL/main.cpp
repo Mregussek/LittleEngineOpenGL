@@ -29,7 +29,7 @@ auto main() -> i32 {
 
     le::CameraSpecification camSpecs;
     camSpecs.aspectRatio = windowSpecs.aspectRatio;
-    camSpecs.position = { 0.5f, 0.f, 3.f };
+    camSpecs.position = { 0.f, 0.f, 3.f };
     camSpecs.worldUp = { 0.f, 1.f, 0.f };
     camSpecs.front = { 0.f, 0.f, -1.f };
     camSpecs.yaw = -90.f;
@@ -98,7 +98,7 @@ auto main() -> i32 {
     }
     
     auto rotateFunc = []()->f32 {
-        return (f32)glfwGetTime();
+        return 0.f;
     };
 
     const le::PlaceVector& placeVector{ parkingEntity.getPlaceVector() };
@@ -158,14 +158,13 @@ auto main() -> i32 {
         renderer.updateSpecs(renderSpecs);
 
         renderer.clearScreen();
-
         for (u32 i = 0; i < meshRuntimeSpecsVector.size(); i++) {
             le::MeshRuntimeSpecification& meshSpecs{ meshRuntimeSpecsVector[i] };
             renderModelSpecs.pBuffer = bufferFactory.get(meshSpecs.type);
             renderModelSpecs.pMeshSpecs = &meshSpecs;
             
-            le::displayInfoAbout(renderModelSpecs.pBuffer);
-            le::displayInfoAbout(renderModelSpecs.pMeshSpecs);
+            // le::displayInfoAbout(renderModelSpecs.pBuffer);
+            // le::displayInfoAbout(renderModelSpecs.pMeshSpecs);
 
             renderer.draw(renderModelSpecs);
         }
