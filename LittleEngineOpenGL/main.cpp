@@ -15,6 +15,8 @@
 #include "renderer/PointLight.h"
 
 #include "game/Entity.h"
+#include "game/Utilities.h"
+#include "game/Place.h"
 
 
 auto main() -> i32 {
@@ -88,36 +90,18 @@ auto main() -> i32 {
     }
 
     le::ParkingEntity parkingEntity;
+    le::CarEntity carEntity;
 
     le::EntityPointerVector entityPointerVector{
-        &parkingEntity
+        &parkingEntity, &carEntity
     };
 
     for (le::Entity* pEntity : entityPointerVector) {
         pEntity->start();
     }
     
-    auto rotateFunc = [](f32 angle)->f32 {
-        return LDEG2RAD(angle);
-    };
-
-    const le::PlaceVector& placeVector{ parkingEntity.getPlaceVector() };
     le::MeshRuntimeSpecificationVector meshRuntimeSpecsVector;
-    for (u32 i = 0; i < placeVector.size(); i++) {
-        LLOG("Emplacing MeshRuntimeSpecs at vector...");
-        le::MeshRuntimeSpecification& meshRunSpecs{ meshRuntimeSpecsVector.emplace_back() };
-        le::Place* pPlace{ placeVector.get(i) };
-        le::displayInfoAbout(pPlace);
-        meshRunSpecs.position = pPlace->position;
-        meshRunSpecs.rotation = pPlace->rotation;
-        meshRunSpecs.scale = pPlace->scale;
-        meshRunSpecs.color = pPlace->color;
-        meshRunSpecs.rotateFunc = rotateFunc;
-        meshRunSpecs.angle = pPlace->angle;
-        meshRunSpecs.type = pPlace->getType();
-        le::displayInfoAbout(&meshRunSpecs);
-    }
-    LLOG("Filled MeshRunTimeSpecs!");
+    fillMeshRuntimeSpecsWithParkingEntity(&parkingEntity, &meshRuntimeSpecsVector);
 
     auto uniformSetupFunc = [](le::Camera* pCamera, le::Shader* pShader, le::MeshRuntimeSpecification* pMeshSpecs,
                                le::PointLight* pPointLight) {
@@ -163,9 +147,6 @@ auto main() -> i32 {
             le::MeshRuntimeSpecification& meshSpecs{ meshRuntimeSpecsVector[i] };
             renderModelSpecs.pBuffer = bufferFactory.get(meshSpecs.type);
             renderModelSpecs.pMeshSpecs = &meshSpecs;
-            
-            // le::displayInfoAbout(renderModelSpecs.pBuffer);
-            // le::displayInfoAbout(renderModelSpecs.pMeshSpecs);
 
             renderer.draw(renderModelSpecs);
         }

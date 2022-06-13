@@ -26,11 +26,11 @@ std::string convertEnumToStr(MeshType type);
 
 struct MeshRuntimeSpecification {
 
-    color4 color;
+    color4 color{};
 
-    point3 position;
-    rotation3 rotation;
-    scale3 scale;
+    point3 position{};
+    rotation3 rotation{};
+    scale3 scale{};
 
     point3(*positionFunc)() { nullptr };
     f32(*rotateFunc)(f32) { nullptr };
@@ -38,7 +38,7 @@ struct MeshRuntimeSpecification {
 
     f32 angle{ 0.f };
 
-    MeshType type;
+    MeshType type{ MeshType::NONE };
 
 };
 

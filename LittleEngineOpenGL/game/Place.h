@@ -26,17 +26,10 @@ struct Place {
 };
 
 
-void displayInfoAbout(Place* pPlace) {
-	LLOG("Place Information Display...");
-	auto displayVec = [](vec3& v, const char* name) {
-		std::cout << name << ": " << v.x << ", " << v.y << ", " << v.z << '\n';
-	};
-	std::cout << "Place Info: " << convertEnumToStr(pPlace->getType()) << '\n';
-	displayVec(pPlace->position, "Position");
-	displayVec(pPlace->rotation, "Rotation");
-	displayVec(pPlace->scale, "Scale");
-	std::cout << "Angle: " << pPlace->angle << '\n';
-}
+using PlacePointerVector = std::vector<Place*>;
+
+
+void displayInfoAbout(Place* pPlace);
 
 
 struct Connector01Place : public Place {
@@ -88,12 +81,7 @@ public:
 		mPlaces.push_back(pPlace);
 	}
 
-	void clearAll() {
-		for (Place* pPlace : mPlaces) {
-			delete pPlace;
-		}
-		mPlaces.clear();
-	}
+	void clearAll();
 	
 	Place* get(u32 i) const { return mPlaces[i]; }
 
@@ -129,7 +117,7 @@ public:
 
 private:
 
-	std::vector<Place*> mPlaces;
+	PlacePointerVector mPlaces;
 
 };
 
