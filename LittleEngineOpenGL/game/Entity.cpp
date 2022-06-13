@@ -11,6 +11,7 @@ void ParkingEntity::start() {
     const rotation3 frontRot{ 1.f, 1.f, 1.f };
     const rotation3 yAxisRot{ 0.f, 1.f, 0.f };
     const scale3 defaultScale{ 0.2f, 0.2f, 0.2f };
+
     mPlaceVector.add<StartPlace>(point3{ 0.f, 0.f, 0.f }, rotation3{ frontRot }, scale3{ defaultScale }, Colors::yellow(ColorType::DEFAULT), 0.f);
     mPlaceVector.add<Road01Place>(point3{ 0.f, 0.f, -2.f }, rotation3{ frontRot }, scale3{ defaultScale }, Colors::red(ColorType::DEFAULT), 0.f);
 
@@ -39,11 +40,23 @@ const PlaceVector& ParkingEntity::getPlaceVector() const {
 }
 
 
+static b8 validateType(Place* pPlace, MeshType type) {
+    if (pPlace->getType() == type) { return LTRUE; }
+    else { return LFALSE; }
+}
+
+static b8 validateNotType(Place* pPlace, MeshType type) {
+    if (pPlace->getType() != type) { return LTRUE; }
+    else { return LFALSE; }
+}
+
 
 void CarEntity::start() {
     if (!pParkingEntity) {
         return;
     }
+
+    mStepSize = 0.3f;
 
     // Adjusting start place to parking's start place
     Place* pStartPlace{ pParkingEntity->getPlaceVector().getFirstFoundType(MeshType::START_PLACE) };
@@ -56,11 +69,16 @@ void CarEntity::start() {
     mCarSpecs.angle = 0.f;
     mCarSpecs.type = MeshType::CAR_01;
 
-    // Calculating destination...
-    Place* pParkingSpot{ pParkingEntity->getPlaceVector().getFirstFoundType(MeshType::PARKING_SPOT) };
-    mDestination = pParkingSpot->position;
-    mDirection = mDestination - mCarSpecs.position;
-    mStepSize = 0.1f;
+    // Calculating parking destination...
+    const PlaceVector& placeVector{ pParkingEntity->getPlaceVector() };
+    Place* pParkingSpot{ placeVector.findClosestPlace(mCarSpecs.position, MeshType::PARKING_SPOT, validateType) };
+    mParkingDestination = pParkingSpot->position;
+
+    // Calculating closest destination
+    Place* pNextPlace{ placeVector.findClosestPlace(mCarSpecs.position, MeshType::START_PLACE, validateNotType) };
+    pNextPlace->visited = LTRUE;
+    mClosestDestination = pNextPlace->position;
+    mDirection = mClosestDestination - mCarSpecs.position;
 }
 
 void CarEntity::update(f32 deltaTime) {
@@ -68,8 +86,15 @@ void CarEntity::update(f32 deltaTime) {
         return;
     }
 
-    if (vec3::compare(mCarSpecs.position, mDestination, mStepSize * 0.3f)) {
+    if (vec3::compare(mCarSpecs.position, mParkingDestination, mStepSize * 0.2f)) {
         return;
+    }
+
+    if (vec3::compare(mCarSpecs.position, mClosestDestination, mStepSize * 0.2f)) {
+        Place* pNextPlace{ pParkingEntity->getPlaceVector().findClosestPlace(mCarSpecs.position, MeshType::START_PLACE, validateNotType) };
+        pNextPlace->visited = LTRUE;
+        mClosestDestination = pNextPlace->position;
+        mDirection = mClosestDestination - mCarSpecs.position;
     }
 
     mCarSpecs.position = mCarSpecs.position + (deltaTime * mStepSize * mDirection);

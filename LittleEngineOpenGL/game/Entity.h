@@ -56,7 +56,8 @@ private:
 
     CarSpecification mCarSpecs{};
     ParkingEntity* pParkingEntity{ nullptr };
-    vec3 mDestination{};
+    vec3 mClosestDestination{};
+    vec3 mParkingDestination{};
     vec3 mDirection{};
     f32 mStepSize{ 0.f };
 

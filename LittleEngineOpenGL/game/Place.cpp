@@ -47,4 +47,27 @@ u32 PlaceVector::size() const {
 }
 
 
+Place* PlaceVector::findClosestPlace(point3 startingPoint, MeshType type, b8(*ifEquation)(Place*, MeshType)) const {
+	Place* pClosestParking{ nullptr };
+	f32 minLength{ FLT_MAX };
+
+	for (Place* pPlace : mPlaces) {
+		if (pPlace->visited) {
+			continue;
+		}
+
+		if (ifEquation(pPlace, type)) {
+			const vec3 checkPoint = pPlace->position - startingPoint;
+			const f32 checkLength = vec3::length(checkPoint);;
+			if (minLength > checkLength) {
+				pClosestParking = pPlace;
+				minLength = checkLength;
+			}
+		}
+	}
+
+	return pClosestParking;
+}
+
+
 }

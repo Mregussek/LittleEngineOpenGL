@@ -20,6 +20,7 @@ struct Place {
 	rotation3 rotation{};
 	scale3 scale{};
 	f32 angle{ 0.f };
+	b8 visited{ LFALSE };
 
 	virtual MeshType getType() const { return MeshType::NONE; }
 
@@ -87,33 +88,7 @@ public:
 	Place* getFirstFoundType(MeshType type) const;
 	u32 size() const;
 
-	template<typename TPlace>
-	b8 findNeareastFrom(point3 startingPoint, Place* pPlace) {
-		f32 nearestLength{ FLT_MAX };
-		for (auto& place : mPlaces) {
-			std::visit(
-				[](auto& arg) {
-					using TArgPlace = std::decay<decltype(arg)>::type;
-					if constexpr (!std::is_same<TArgPlace, TPlace>::value) {
-						return;
-					}
-					
-					const vec3 subtracted{ startingPoint - place.position };
-					const f32 length{ vec3::length(subtracted) };
-					if (length < nearestLength) {
-						nearestLength = length;
-						pPlace = &place;
-					}
-				},
-			place);
-		}
-
-		if (nearestLength != FLT_MAX) {
-			return LTRUE;
-		}
-		 
-		return LFALSE;
-	}
+	Place* findClosestPlace(point3 startingPoint, MeshType type, b8(*ifEquation)(Place*, MeshType)) const;
 
 private:
 
