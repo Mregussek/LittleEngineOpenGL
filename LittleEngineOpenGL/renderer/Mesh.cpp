@@ -108,7 +108,7 @@ u32* CubeMesh::indices() { return mIndices.data(); }
 u32 CubeMesh::countIndices() const { return (u32)mIndices.size(); }
 u32 CubeMesh::sizeofIndices() const { return (u32)(mIndices.size() * sizeof(decltype(mIndices[0]))); }
 
-
+MeshType CubeMesh::getType() const { return MeshType::NONE; }
 
 void ObjMeshFactory::init() {
     LLOG("Initializing obj mesh factory...");

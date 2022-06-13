@@ -58,6 +58,8 @@ public:
     virtual u32 countIndices() const { return 0; }
     virtual u32 sizeofIndices() const { return 0; }
 
+    virtual MeshType getType() const { return MeshType::NONE; }
+
 };
 
 
@@ -80,7 +82,7 @@ public:
     u32 sizeofIndices() const override;
 
     const std::string getPath() const;
-    MeshType getType() const;
+    MeshType getType() const override;
 
 private:
 
@@ -111,6 +113,8 @@ public:
     u32* indices() override;
     u32 countIndices() const override;
     u32 sizeofIndices() const override;
+
+    MeshType getType() const override;
 
 private:
 

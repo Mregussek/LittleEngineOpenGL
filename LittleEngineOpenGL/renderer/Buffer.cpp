@@ -71,7 +71,7 @@ void displayInfoAbout(Buffer* pBuffer) {
 
 
 void BufferFactory::add(Mesh* pMesh) {
-    LLOG("Adding buffer to BufferFactory...");
+    LLOG("Adding buffer for mesh " + convertEnumToStr(pMesh->getType()) + " to BufferFactory...");
     auto& buffer = mBuffers.emplace_back();
     
     BufferSpecification bufferSpecs;
@@ -81,9 +81,10 @@ void BufferFactory::add(Mesh* pMesh) {
     bufferSpecs.pIndices = pMesh->indices();
     bufferSpecs.countIndices = pMesh->countIndices();
     bufferSpecs.sizeofIndices = pMesh->sizeofIndices();
+    bufferSpecs.type = pMesh->getType();
 
     buffer.init(bufferSpecs);
-    LLOG("Buffer added to factory!");
+    LLOG("Buffer added to factory for mesh " + convertEnumToStr(pMesh->getType()));
 }
 
 

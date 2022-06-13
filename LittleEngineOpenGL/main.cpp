@@ -105,7 +105,7 @@ auto main() -> i32 {
     le::MeshRuntimeSpecificationVector meshRuntimeSpecsVector;
     for (u32 i = 0; i < placeVector.size(); i++) {
         LLOG("Emplacing MeshRuntimeSpecs at vector...");
-        le::MeshRuntimeSpecification meshRunSpecs{ meshRuntimeSpecsVector.emplace_back() };
+        le::MeshRuntimeSpecification& meshRunSpecs{ meshRuntimeSpecsVector.emplace_back() };
         le::Place* pPlace{ placeVector.get(i) };
         le::displayInfoAbout(pPlace);
         meshRunSpecs.position = pPlace->position;
@@ -148,6 +148,8 @@ auto main() -> i32 {
     renderModelSpecs.pUniformSetupFunc = uniformSetupFunc;
     renderModelSpecs.pMeshSpecs = nullptr; // To be filled later...
 
+    LLOG("Starting rendering!");
+
     while (!window.isGoingToClose()) {
         window.updateDeltaTime();
         input.process();
@@ -161,8 +163,6 @@ auto main() -> i32 {
             le::MeshRuntimeSpecification& meshSpecs{ meshRuntimeSpecsVector[i] };
             renderModelSpecs.pBuffer = bufferFactory.get(meshSpecs.type);
             renderModelSpecs.pMeshSpecs = &meshSpecs;
-            le::displayInfoAbout(renderModelSpecs.pMeshSpecs);
-            le::displayInfoAbout(renderModelSpecs.pBuffer);
             
             renderer.draw(renderModelSpecs);
         }
