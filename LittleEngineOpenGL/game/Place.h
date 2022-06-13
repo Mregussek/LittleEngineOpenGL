@@ -15,46 +15,72 @@ namespace le
 struct Place {
 
 	point3 position;
+	rotation3 rotation;
+	scale3 scale;
+
+	virtual const char* getPath() const { return ""; }
 
 };
 
 
-struct ParkingPlace : public Place { };
+struct Connector01Place : public Place {
+	
+	const char* getPath() const override { return "resources/connector_01.obj"; }
 
-struct RoadPlace : public Place { };
-
-struct StartPlace : public Place { };
-
-struct EndPlace : public Place { };
+};
 
 
-using PlaceVariant = std::variant<ParkingPlace, RoadPlace, StartPlace, EndPlace>;
+struct Connector02Place : public Place { 
+
+	const char* getPath() const override { return "resources/connector_02.obj"; }
+
+};
+
+
+struct ParkingPlace : public Place {
+
+	const char* getPath() const override { return "resources/parking_spot.obj"; }
+
+};
+
+
+struct RoadPlace : public Place { 
+
+	const char* getPath() const override { return "resources/road.obj"; }
+
+};
+
+
+struct StartPlace : public Place {
+
+	const char* getPath() const override { return "resources/cube.obj"; }
+
+};
 
 
 class PlaceVector {
 public:
 
 	template<typename TPlace>
-	void add(point3 position) {
-		places.push_back(TPlace{ position });
+	void add(point3 position, rotation3 rotation, scale3 scale) {
+		mPlaces.push_back(new TPlace{ position, rotation, scale });
+	}
+
+	void clearAll() {
+		for (Place* pPlace : mPlaces) {
+			delete pPlace;
+		}
+		mPlaces.clear();
 	}
 	
-	template<typename TPlace>
-	void addPlacesLine(point3 startingPoint, vec3 moveVector, u32 placesCount, b8 addStartingPoint) {
-		if (addStartingPoint) {
-			add<TPlace>(startingPoint);
-			placesCount =- -1;
-		}
+	const Place* get(u32 i) const { return mPlaces[i]; }
 
-		for (u32 i = 0; i < placesCount; i++) {
-			add<TPlace>(startingPoint + moveVector);
-		}
-	}
+	u32 size() const { return mPlaces.size(); }
 
 	template<typename TPlace>
 	b8 findNeareastFrom(point3 startingPoint, Place* pPlace) {
 		f32 nearestLength{ FLT_MAX };
-		for (auto& place : places) {
+		for (auto& place : mPlaces) {
 			std::visit(
 				[](auto& arg) {
 					using TArgPlace = std::decay<decltype(arg)>::type;
@@ -75,13 +101,13 @@ public:
 		if (nearestLength != FLT_MAX) {
 			return LTRUE;
 		}
-
+		 
 		return LFALSE;
 	}
 
 private:
 
-	std::vector<PlaceVariant> places;
+	std::vector<Place*> mPlaces;
 
 };
 

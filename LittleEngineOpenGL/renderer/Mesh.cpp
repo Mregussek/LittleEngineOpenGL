@@ -57,11 +57,30 @@ void ObjMesh::appendVertex(vec3 position, vec3 normal) {
     mVertices.push_back(normal.z);
 }
 
+
 void ObjMesh::appendTriangleIndices(u32 a, u32 b, u32 c) {
     mIndices.push_back(a);
     mIndices.push_back(b);
     mIndices.push_back(c);
 }
+
+
+f32* ObjMesh::vertices() { return mVertices.data(); }
+u32 ObjMesh::countVertices() const { return (u32)mVertices.size(); }
+u32 ObjMesh::sizeofVertices() const { return (u32)(mVertices.size() * sizeof(decltype(mVertices[0]))); }
+
+u32* ObjMesh::indices() { return mIndices.data(); }
+u32 ObjMesh::countIndices() const { return (u32)mIndices.size(); }
+u32 ObjMesh::sizeofIndices() const { return (u32)(mIndices.size() * sizeof(decltype(mIndices[0]))); }
+
+
+f32* CubeMesh::vertices() { return mVertices.data(); }
+u32 CubeMesh::countVertices() const { return (u32)mVertices.size(); }
+u32 CubeMesh::sizeofVertices() const { return (u32)(mVertices.size() * sizeof(decltype(mVertices[0]))); }
+
+u32* CubeMesh::indices() { return mIndices.data(); }
+u32 CubeMesh::countIndices() const { return (u32)mIndices.size(); }
+u32 CubeMesh::sizeofIndices() const { return (u32)(mIndices.size() * sizeof(decltype(mIndices[0]))); }
 
 
 }

@@ -22,14 +22,18 @@ public:
 };
 
 
-class Parking : public Entity {
+using EntityPointerVector = std::vector<Entity*>;
+
+
+class ParkingEntity : public Entity {
 public:
 
     void start() override {
-        placeVector.add<StartPlace>({ 0.f, 0.f, 0.f });
-        placeVector.addPlacesLine<RoadPlace>({ 0.f, 0.f, 2.f }, { 0.f, 0.f, 2.f }, 6, LTRUE);
-        placeVector.addPlacesLine<ParkingPlace>({ -2.f, 0.f, 2.f }, { 0.f, 0.f, 2.f }, 6, LTRUE);
-        placeVector.addPlacesLine<ParkingPlace>({ 2.f, 0.f, 2.f }, { 0.f, 0.f, 2.f }, 6, LTRUE);
+        mPlaceVector.add<StartPlace>(point3{ 0.f, 0.f, 0.f }, rotation3{ 0.f, 0.f, 0.f }, scale3{ 0.2f, 0.2f, 0.2f });
+        mPlaceVector.add<RoadPlace>(point3{ 0.f, 0.f, -3.f }, rotation3{ 0.f, 0.f, 0.f }, scale3{ 0.2f, 0.2f, 0.2f });
+        mPlaceVector.add<Connector01Place>(point3{ 0.f, 0.f, -6.f }, rotation3{ 0.f, 0.f, 0.f }, scale3{ 0.2f, 0.2f, 0.2f });
+        mPlaceVector.add<Connector02Place>(point3{ 0.f, 0.f, -9.f }, rotation3{ 0.f, 0.f, 0.f }, scale3{ 0.2f, 0.2f, 0.2f });
+        mPlaceVector.add<ParkingPlace>(point3{ 0.f, 0.f, -12.f }, rotation3{ 0.f, 0.f, 0.f }, scale3{ 0.2f, 0.2f, 0.2f });
     }
 
     void update() override {
@@ -37,17 +41,19 @@ public:
     }
 
     void close() override {
-
+        mPlaceVector.clearAll();
     }
+
+    const PlaceVector& getPlaceVector() const { return mPlaceVector; }
 
 private:
 
-    PlaceVector placeVector;
+    PlaceVector mPlaceVector;
 
 };
 
 
-class Car : public Entity {
+class CarEntity : public Entity {
 public:
 
     void start() override {

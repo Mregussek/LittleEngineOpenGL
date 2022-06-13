@@ -13,12 +13,17 @@ namespace le
 {
 
 
-struct MeshSpecification {
+struct MeshRuntimeSpecification {
 
     color4 color;
+
     point3 position;
     rotation3 rotation;
-    f32(*rotateFunc)();
+    scale3 scale;
+
+    point3(*positionFunc)();
+    std::pair<f32, rotation3>(*rotateFunc)();
+    scale3(*scaleFunc)();
 
 };
 
@@ -44,13 +49,13 @@ public:
 
     b8 loadedProperly() const;
 
-    f32* vertices() override { return mVertices.data(); }
-    u32 countVertices() const override { return (u32)mVertices.size(); }
-    u32 sizeofVertices() const override { return (u32)(mVertices.size() * sizeof(decltype(mVertices[0]))); }
+    f32* vertices() override;
+    u32 countVertices() const override;
+    u32 sizeofVertices() const override;
 
-    u32* indices() override { return mIndices.data(); }
-    u32 countIndices() const override { return (u32)mIndices.size(); }
-    u32 sizeofIndices() const override { return (u32)(mIndices.size() * sizeof(decltype(mIndices[0]))); }
+    u32* indices() override;
+    u32 countIndices() const override;
+    u32 sizeofIndices() const override;
 
 private:
 
@@ -59,21 +64,25 @@ private:
 
     std::vector<f32> mVertices{};
     std::vector<u32> mIndices{};
+    u32 mID{ 0 };
     b8 mLoaded{ LFALSE };
 
 };
 
 
+using ObjMeshVector = std::vector<ObjMesh>;
+
+
 class CubeMesh : public Mesh {
 public:
 
-    f32* vertices() override { return mVertices.data(); }
-    u32 countVertices() const override { return (u32)mVertices.size(); }
-    u32 sizeofVertices() const override { return (u32)(mVertices.size() * sizeof(decltype(mVertices[0]))); }
+    f32* vertices() override;
+    u32 countVertices() const override;
+    u32 sizeofVertices() const override;
 
-    u32* indices() override { return mIndices.data(); }
-    u32 countIndices() const override { return (u32)mIndices.size(); }
-    u32 sizeofIndices() const override { return (u32)(mIndices.size() * sizeof(decltype(mIndices[0]))); }
+    u32* indices() override;
+    u32 countIndices() const override;
+    u32 sizeofIndices() const override;
 
 private:
 

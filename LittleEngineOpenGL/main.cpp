@@ -21,7 +21,7 @@ auto main() -> i32 {
     le::WindowSpecification windowSpecs;
     windowSpecs.width = 800;
     windowSpecs.height = 600;
-    windowSpecs.name = "LittleEngineOpenGL v0.1 OpenGL 4.6.0";
+    windowSpecs.name = "LittleEngineOpenGL v0.5 OpenGL 4.6.0";
     windowSpecs.aspectRatio = (f32)windowSpecs.width / (f32)windowSpecs.height;
 
     le::Window window;
@@ -78,6 +78,20 @@ auto main() -> i32 {
     pointLightSpecs.color = { 0.5f, 1.f, 0.5f };
 
     le::PointLight pointLight(pointLightSpecs);
+
+    le::ParkingEntity parkingEntity;
+
+    le::EntityPointerVector entityPointerVector{
+        &parkingEntity
+    };
+
+    for (le::Entity* pEntity : entityPointerVector) {
+        pEntity->start();
+    }
+
+
+
+
 
     std::vector<const char*> parkingFiles{
         "resources/connector_01.obj",
@@ -186,6 +200,11 @@ auto main() -> i32 {
     for (auto& buf : buffer) {
         buf.close();
     }
+   
+    for (le::Entity* pEntity : entityPointerVector) {
+        pEntity->close();
+    }
+
     shader.close();
     input.close();
     window.close();
