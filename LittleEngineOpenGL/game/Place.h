@@ -32,16 +32,23 @@ using PlacePointerVector = std::vector<Place*>;
 void displayInfoAbout(Place* pPlace);
 
 
-struct Connector01Place : public Place {
+struct Road01Place : public Place {
 	
-	MeshType getType() const override { return MeshType::CONNECTOR_01; }
+	MeshType getType() const override { return MeshType::ROAD_01; }
 
 };
 
 
-struct Connector02Place : public Place { 
+struct Road02Place : public Place {
 
-	MeshType getType() const override { return MeshType::CONNECTOR_02; }
+	MeshType getType() const override { return MeshType::ROAD_02; }
+
+};
+
+
+struct Road03Place : public Place {
+
+	MeshType getType() const override { return MeshType::ROAD_03; }
 
 };
 
@@ -49,13 +56,6 @@ struct Connector02Place : public Place {
 struct ParkingPlace : public Place {
 
 	MeshType getType() const override { return MeshType::PARKING_SPOT; }
-
-};
-
-
-struct RoadPlace : public Place { 
-
-	MeshType getType() const override { return MeshType::ROAD; }
 
 };
 

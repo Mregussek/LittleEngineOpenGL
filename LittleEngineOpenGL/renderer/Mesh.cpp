@@ -9,9 +9,9 @@ namespace le
 
 std::string convertEnumToStr(MeshType type) {
     switch (type) {
-    case MeshType::CONNECTOR_01: return "CONNECTOR_01";
-    case MeshType::CONNECTOR_02: return "CONNECTOR_02";
-    case MeshType::ROAD: return "ROAD";
+    case MeshType::ROAD_01: return "ROAD_01";
+    case MeshType::ROAD_02: return "ROAD_02";
+    case MeshType::ROAD_03: return "ROAD_03";
     case MeshType::START_PLACE: return "START_PLACE";
     case MeshType::PARKING_SPOT: return "PARKING_SPOT";
     default: return "NONE";
