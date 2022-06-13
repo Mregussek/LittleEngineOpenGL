@@ -74,6 +74,15 @@ u32 ObjMesh::countIndices() const { return (u32)mIndices.size(); }
 u32 ObjMesh::sizeofIndices() const { return (u32)(mIndices.size() * sizeof(decltype(mIndices[0]))); }
 
 
+MeshType ObjMesh::getType() const {
+    return mType;
+}
+
+void ObjMesh::setType(MeshType type) {
+    mType = type;
+}
+
+
 f32* CubeMesh::vertices() { return mVertices.data(); }
 u32 CubeMesh::countVertices() const { return (u32)mVertices.size(); }
 u32 CubeMesh::sizeofVertices() const { return (u32)(mVertices.size() * sizeof(decltype(mVertices[0]))); }
@@ -81,6 +90,40 @@ u32 CubeMesh::sizeofVertices() const { return (u32)(mVertices.size() * sizeof(de
 u32* CubeMesh::indices() { return mIndices.data(); }
 u32 CubeMesh::countIndices() const { return (u32)mIndices.size(); }
 u32 CubeMesh::sizeofIndices() const { return (u32)(mIndices.size() * sizeof(decltype(mIndices[0]))); }
+
+
+
+void ObjMeshFactory::init() {
+    for (u32 i = 0; i < mPaths.size(); i++) {
+        const auto [path, type] = mPaths[i];
+        auto& objMesh{ mVector.emplace_back() };
+        objMesh.setType(type);
+        objMesh.loadFile(path.c_str());
+    }
+}
+
+ObjMesh* ObjMeshFactory::get(MeshType type) {
+    for (ObjMesh& objMesh : mVector) {
+        if (objMesh.getType() == type) {
+            LLOG("Returing correct obj mesh from factory...");
+            return &objMesh;
+        }
+    }
+    LLOG("Could not find correct obj mesh at factory!");
+    return nullptr;
+}
+
+ObjMesh* ObjMeshFactory::get(u32 i) {
+    return &mVector[i];
+}
+
+void ObjMeshFactory::close() {
+    mVector.clear();
+}
+
+u32 ObjMeshFactory::size() const {
+    return (u32)mVector.size();
+}
 
 
 }

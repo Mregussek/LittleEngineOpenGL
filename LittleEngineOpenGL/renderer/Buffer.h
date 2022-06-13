@@ -5,10 +5,16 @@
 
 #include "includes.h"
 #include "defines.h"
+#include "Mesh.h"
 
 
 namespace le
 {
+
+
+class Mesh;
+using BufferType = MeshType;
+
 
 struct BufferSpecification {
 
@@ -18,6 +24,8 @@ struct BufferSpecification {
 	u32* pIndices{ nullptr };
 	u32 countIndices{ 0 };
 	u32 sizeofIndices{ 0 };
+
+	BufferType type{ BufferType::NONE };
 
 };
 
@@ -31,6 +39,7 @@ public:
 	void use() const;
 
 	const BufferSpecification& getSpecs() const;
+	BufferType getType() const;
 
 private:
 
@@ -40,6 +49,21 @@ private:
 	u32 mEBO{};
 
 };
+
+
+class BufferFactory {
+public:
+
+	void add(Mesh* pMesh);
+	Buffer* get(BufferType type);
+	void clear();
+
+private:
+
+	std::vector<Buffer> mBuffers;
+
+};
+
 
 }
 

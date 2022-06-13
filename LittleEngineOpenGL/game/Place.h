@@ -6,6 +6,7 @@
 #include "includes.h"
 #include "defines.h"
 #include "math/vec3.h"
+#include "renderer/Mesh.h"
 
 
 namespace le
@@ -18,42 +19,42 @@ struct Place {
 	rotation3 rotation;
 	scale3 scale;
 
-	virtual const char* getPath() const { return ""; }
+	virtual MeshType getType() const { return MeshType::NONE; }
 
 };
 
 
 struct Connector01Place : public Place {
 	
-	const char* getPath() const override { return "resources/connector_01.obj"; }
+	MeshType getType() const override { return MeshType::CONNECTOR_01; }
 
 };
 
 
 struct Connector02Place : public Place { 
 
-	const char* getPath() const override { return "resources/connector_02.obj"; }
+	MeshType getType() const override { return MeshType::CONNECTOR_02; }
 
 };
 
 
 struct ParkingPlace : public Place {
 
-	const char* getPath() const override { return "resources/parking_spot.obj"; }
+	MeshType getType() const override { return MeshType::PARKING_SPOT; }
 
 };
 
 
 struct RoadPlace : public Place { 
 
-	const char* getPath() const override { return "resources/road.obj"; }
+	MeshType getType() const override { return MeshType::ROAD; }
 
 };
 
 
 struct StartPlace : public Place {
 
-	const char* getPath() const override { return "resources/cube.obj"; }
+	MeshType getType() const override { return MeshType::START_PLACE; }
 
 };
 
@@ -63,7 +64,11 @@ public:
 
 	template<typename TPlace>
 	void add(point3 position, rotation3 rotation, scale3 scale) {
-		mPlaces.push_back(new TPlace{ position, rotation, scale });
+		TPlace* pPlace{ new TPlace };
+		pPlace->position = position;
+		pPlace->rotation = rotation;
+		pPlace->scale = scale;
+		mPlaces.push_back(pPlace);
 	}
 
 	void clearAll() {
@@ -75,7 +80,7 @@ public:
 	
 	const Place* get(u32 i) const { return mPlaces[i]; }
 
-	u32 size() const { return mPlaces.size(); }
+	u32 size() const { return (u32)mPlaces.size(); }
 
 	template<typename TPlace>
 	b8 findNeareastFrom(point3 startingPoint, Place* pPlace) {

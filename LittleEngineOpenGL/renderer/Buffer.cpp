@@ -1,5 +1,6 @@
 
 #include "Buffer.h"
+#include "Mesh.h"
 
 
 namespace le
@@ -55,6 +56,44 @@ void Buffer::use() const {
 
 const BufferSpecification& Buffer::getSpecs() const {
     return mBufferSpecs;
+}
+
+
+BufferType Buffer::getType() const {
+    return mBufferSpecs.type;
+}
+
+
+
+void BufferFactory::add(Mesh* pMesh) {
+    auto& buffer = mBuffers.emplace_back();
+    
+    BufferSpecification bufferSpecs;
+    bufferSpecs.pVertices = pMesh->vertices();
+    bufferSpecs.countVertices = pMesh->countVertices();
+    bufferSpecs.sizeofVertices = pMesh->sizeofVertices();
+    bufferSpecs.pIndices = pMesh->indices();
+    bufferSpecs.countIndices = pMesh->countIndices();
+    bufferSpecs.sizeofIndices = pMesh->sizeofIndices();
+
+    buffer.init(bufferSpecs);
+}
+
+
+Buffer* BufferFactory::get(BufferType type) {
+    for (Buffer& buffer : mBuffers) {
+        if (buffer.getType() == type) {
+            LLOG("Returing correct buffer type from factory...");
+            return &buffer;
+        }
+    }
+    LLOG("Could not find correct buffer type at factory!");
+    return nullptr;
+}
+
+
+void BufferFactory::clear() {
+    mBuffers.clear();
 }
 
 

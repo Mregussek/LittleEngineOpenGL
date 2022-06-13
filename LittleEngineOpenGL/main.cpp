@@ -79,6 +79,14 @@ auto main() -> i32 {
 
     le::PointLight pointLight(pointLightSpecs);
 
+    le::ObjMeshFactory objMeshFactory;
+    objMeshFactory.init();
+
+    le::BufferFactory bufferFactory;
+    for (u32 i = 0; i < objMeshFactory.size(); i++) {
+        bufferFactory.add(objMeshFactory.get(i));
+    }
+
     le::ParkingEntity parkingEntity;
 
     le::EntityPointerVector entityPointerVector{
@@ -88,67 +96,25 @@ auto main() -> i32 {
     for (le::Entity* pEntity : entityPointerVector) {
         pEntity->start();
     }
-
-
-
-
-
-    std::vector<const char*> parkingFiles{
-        "resources/connector_01.obj",
-        "resources/connector_02.obj",
-        "resources/parking_spot.obj",
-        "resources/road.obj"
-    };
-
-    std::vector<le::ObjMesh> parkingObj;
-    for (const auto& file : parkingFiles) {
-        auto& obj{ parkingObj.emplace_back() };
-        obj.loadFile(file);
-    }
-
-    le::CubeMesh cube;
-
-    auto fillBufferSpecs = [](le::BufferSpecification& specs, le::Mesh* pMesh) {
-        specs.pVertices = pMesh->vertices();
-        specs.countVertices = pMesh->countVertices();
-        specs.sizeofVertices = pMesh->sizeofVertices();
-        specs.pIndices = pMesh->indices();
-        specs.countIndices = pMesh->countIndices();
-        specs.sizeofIndices = pMesh->sizeofIndices();
-    };
-
-    std::vector<le::BufferSpecification> bufferSpecs;
-    std::vector<le::Buffer> buffer;
-
-    for (u32 i = 0; i < parkingFiles.size(); i++) {
-        auto& specs = bufferSpecs.emplace_back();
-        fillBufferSpecs(specs, parkingObj[i].loadedProperly() ? (le::Mesh*)&parkingObj[i] : (le::Mesh*)&cube);
-        auto& buf = buffer.emplace_back();
-        buf.init(specs);
-    }
-
+    
     auto rotateFunc = []()->f32 {
         return (f32)glfwGetTime();
     };
-    auto generateMeshSpecification = [&rotateFunc](f32 x, f32 y, f32 z, le::ColorType ct)->std::vector<le::MeshSpecification> {
-        return {
-            { le::Colors::red(ct), le::point3{1.f + x, 0.f + y, -2.f + z}, le::rotation3{0.3f, 0.5f, 1.f}, rotateFunc},
-            { le::Colors::green(ct), le::point3{ -1.f + x, 0.f + y, -2.f + z }, le::rotation3{ 0.3f, 0.5f, 1.f }, rotateFunc },
-            { le::Colors::blue(ct), le::point3{ 0.f + x, 1.f + y, -3.f + z }, le::rotation3{ 0.3f, 0.5f, 1.f }, rotateFunc },
-            { le::Colors::yellow(ct), le::point3{ 0.f + x, -1.f + y, -2.f + z }, le::rotation3{ 0.3f, 0.5f, 1.f }, rotateFunc },
-            { le::Colors::orange(ct), le::point3{ 1.f + x, 2.f + y, -2.f + z }, le::rotation3{ 0.3f, 0.5f, 1.f }, rotateFunc },
-            { le::Colors::pink(ct), le::point3{ -1.f + x, 2.f + y, -2.f + z }, le::rotation3{ 0.3f, 0.5f, 1.f }, rotateFunc },
-        };
-    };
 
-    std::vector<std::vector<le::MeshSpecification>> meshSpecificationsArray{
-        generateMeshSpecification(0.f, 0.f, 0.f, le::ColorType::DEFAULT),
-        generateMeshSpecification(6.f, 0.f, 0.f, le::ColorType::LIGHT),
-        generateMeshSpecification(-6.f, 0.f, 0.f, le::ColorType::DARK),
-        generateMeshSpecification(0.f, 6.f, 0.f, le::ColorType::DEFAULT)
-    };
+    const le::PlaceVector& placeVector{ parkingEntity.getPlaceVector() };
+    le::MeshRuntimeSpecificationVector meshRuntimeSpecsVector;
+    for (u32 i = 0; i < placeVector.size(); i++) {
+        le::MeshRuntimeSpecification meshRunSpecs{ meshRuntimeSpecsVector.emplace_back() };
+        const le::Place* pPlace{ placeVector.get(i) };
+        meshRunSpecs.position = pPlace->position;
+        meshRunSpecs.rotation = pPlace->rotation;
+        meshRunSpecs.scale = pPlace->scale;
+        meshRunSpecs.color = le::Colors::red(le::ColorType::DEFAULT);
+        meshRunSpecs.rotateFunc = rotateFunc;
+        meshRunSpecs.type = pPlace->getType();
+    }
 
-    auto uniformSetupFunc = [](le::Camera* pCamera, le::Shader* pShader, le::MeshSpecification* pMeshSpecs,
+    auto uniformSetupFunc = [](le::Camera* pCamera, le::Shader* pShader, le::MeshRuntimeSpecification* pMeshSpecs,
                                le::PointLight* pPointLight) {
         const le::mat4 objectMatrix =
             le::mat4::translation(pMeshSpecs->position) *
@@ -186,25 +152,26 @@ auto main() -> i32 {
         renderer.updateSpecs(renderSpecs);
 
         renderer.clearScreen();
-        for (u32 i = 0; i < buffer.size(); i++) {
-            renderModelSpecs.pBuffer = &buffer[i];
-            for (auto& concreteMeshSpecs : meshSpecificationsArray[i]) {
-                renderModelSpecs.pMeshSpecs = &concreteMeshSpecs;
-                renderer.draw(renderModelSpecs);
-            }
+
+        for (u32 i = 0; i < meshRuntimeSpecsVector.size(); i++) {
+            le::MeshRuntimeSpecification& meshSpecs{ meshRuntimeSpecsVector[i] };
+
+            renderModelSpecs.pBuffer = bufferFactory.get(meshSpecs.type);
+            renderModelSpecs.pMeshSpecs = &meshSpecs;
+
+            renderer.draw(renderModelSpecs);
         }
 
         window.swapBuffers();
     }
 
-    for (auto& buf : buffer) {
-        buf.close();
-    }
-   
+
     for (le::Entity* pEntity : entityPointerVector) {
         pEntity->close();
     }
-
+    bufferFactory.clear();
+    objMeshFactory.close();
+    meshRuntimeSpecsVector.clear();
     shader.close();
     input.close();
     window.close();

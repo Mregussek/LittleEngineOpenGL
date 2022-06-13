@@ -13,6 +13,14 @@ namespace le
 {
 
 
+class ObjMeshFactory;
+
+
+enum class MeshType {
+    NONE, CONNECTOR_01, CONNECTOR_02, ROAD, PARKING_SPOT, START_PLACE
+};
+
+
 struct MeshRuntimeSpecification {
 
     color4 color;
@@ -22,10 +30,15 @@ struct MeshRuntimeSpecification {
     scale3 scale;
 
     point3(*positionFunc)();
-    std::pair<f32, rotation3>(*rotateFunc)();
+    f32(*rotateFunc)();
     scale3(*scaleFunc)();
 
+    MeshType type;
+
 };
+
+
+using MeshRuntimeSpecificationVector = std::vector<MeshRuntimeSpecification>;
 
 
 class Mesh {
@@ -43,6 +56,9 @@ public:
 
 
 class ObjMesh : public Mesh {
+
+    friend class ObjMeshFactory;
+
 public:
 
     b8 loadFile(const char* path);
@@ -57,7 +73,11 @@ public:
     u32 countIndices() const override;
     u32 sizeofIndices() const override;
 
+    MeshType getType() const;
+
 private:
+
+    void setType(MeshType type);
 
     void appendVertex(vec3 position, vec3 normal);
     void appendTriangleIndices(u32 a, u32 b, u32 c);
@@ -65,6 +85,7 @@ private:
     std::vector<f32> mVertices{};
     std::vector<u32> mIndices{};
     u32 mID{ 0 };
+    MeshType mType{ MeshType::NONE };
     b8 mLoaded{ LFALSE };
 
 };
@@ -117,6 +138,31 @@ private:
         4, 6, 7,
         4, 5, 7
     };
+
+};
+
+
+class ObjMeshFactory {
+public:
+
+    void init();
+    ObjMesh* get(MeshType type);
+    ObjMesh* get(u32 i);
+    void close();
+
+    u32 size() const;
+
+private:
+
+    const std::array<std::pair<std::string, MeshType>, 5> mPaths{
+        std::pair{ "resources/connector_01.obj", MeshType::CONNECTOR_01 },
+        std::pair{ "resources/connector_02.obj", MeshType::CONNECTOR_02 },
+        std::pair{ "resources/parking_spot.obj", MeshType::PARKING_SPOT },
+        std::pair{ "resources/road.obj", MeshType::ROAD },
+        std::pair{ "resources/cube.obj", MeshType::START_PLACE }
+    };
+
+    ObjMeshVector mVector;
 
 };
 
