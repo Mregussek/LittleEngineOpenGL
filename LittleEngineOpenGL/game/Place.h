@@ -15,13 +15,25 @@ namespace le
 
 struct Place {
 
-	point3 position;
-	rotation3 rotation;
-	scale3 scale;
+	point3 position{};
+	rotation3 rotation{};
+	scale3 scale{};
 
 	virtual MeshType getType() const { return MeshType::NONE; }
 
 };
+
+
+void displayInfoAbout(Place* pPlace) {
+	LLOG("Place Information Display...");
+	auto displayVec = [](vec3& v, const char* name) {
+		std::cout << name << ": " << v.x << ", " << v.y << ", " << v.z << '\n';
+	};
+	std::cout << "Place Info: " << convertEnumToStr(pPlace->getType()) << '\n';
+	displayVec(pPlace->position, "Position");
+	displayVec(pPlace->rotation, "Rotation");
+	displayVec(pPlace->scale, "Scale");
+}
 
 
 struct Connector01Place : public Place {
@@ -78,7 +90,7 @@ public:
 		mPlaces.clear();
 	}
 	
-	const Place* get(u32 i) const { return mPlaces[i]; }
+	Place* get(u32 i) const { return mPlaces[i]; }
 
 	u32 size() const { return (u32)mPlaces.size(); }
 

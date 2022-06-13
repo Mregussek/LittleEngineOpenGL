@@ -104,15 +104,19 @@ auto main() -> i32 {
     const le::PlaceVector& placeVector{ parkingEntity.getPlaceVector() };
     le::MeshRuntimeSpecificationVector meshRuntimeSpecsVector;
     for (u32 i = 0; i < placeVector.size(); i++) {
+        LLOG("Emplacing MeshRuntimeSpecs at vector...");
         le::MeshRuntimeSpecification meshRunSpecs{ meshRuntimeSpecsVector.emplace_back() };
-        const le::Place* pPlace{ placeVector.get(i) };
+        le::Place* pPlace{ placeVector.get(i) };
+        le::displayInfoAbout(pPlace);
         meshRunSpecs.position = pPlace->position;
         meshRunSpecs.rotation = pPlace->rotation;
         meshRunSpecs.scale = pPlace->scale;
         meshRunSpecs.color = le::Colors::red(le::ColorType::DEFAULT);
         meshRunSpecs.rotateFunc = rotateFunc;
         meshRunSpecs.type = pPlace->getType();
+        le::displayInfoAbout(&meshRunSpecs);
     }
+    LLOG("Filled MeshRunTimeSpecs!");
 
     auto uniformSetupFunc = [](le::Camera* pCamera, le::Shader* pShader, le::MeshRuntimeSpecification* pMeshSpecs,
                                le::PointLight* pPointLight) {
@@ -155,10 +159,11 @@ auto main() -> i32 {
 
         for (u32 i = 0; i < meshRuntimeSpecsVector.size(); i++) {
             le::MeshRuntimeSpecification& meshSpecs{ meshRuntimeSpecsVector[i] };
-
             renderModelSpecs.pBuffer = bufferFactory.get(meshSpecs.type);
             renderModelSpecs.pMeshSpecs = &meshSpecs;
-
+            le::displayInfoAbout(renderModelSpecs.pMeshSpecs);
+            le::displayInfoAbout(renderModelSpecs.pBuffer);
+            
             renderer.draw(renderModelSpecs);
         }
 

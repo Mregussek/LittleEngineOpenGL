@@ -51,6 +51,9 @@ private:
 };
 
 
+void displayInfoAbout(Buffer* pBuffer);
+
+
 class BufferFactory {
 public:
 

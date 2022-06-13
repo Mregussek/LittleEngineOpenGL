@@ -37,7 +37,7 @@ struct RenderModelSpecification {
 	void(*pUniformSetupFunc)(Camera* pCamera,
 							 Shader* pShader,
 							 MeshRuntimeSpecification* pMeshSpecs,
-							 PointLight* pPointLight);
+							 PointLight* pPointLight) { nullptr };
 
 };
 

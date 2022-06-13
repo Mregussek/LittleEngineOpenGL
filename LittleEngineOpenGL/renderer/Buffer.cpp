@@ -64,8 +64,14 @@ BufferType Buffer::getType() const {
 }
 
 
+void displayInfoAbout(Buffer* pBuffer) {
+    LLOG("Buffer Info...");
+    std::cout << "BufferType: " << convertEnumToStr(pBuffer->getType()) << '\n';
+}
+
 
 void BufferFactory::add(Mesh* pMesh) {
+    LLOG("Adding buffer to BufferFactory...");
     auto& buffer = mBuffers.emplace_back();
     
     BufferSpecification bufferSpecs;
@@ -77,22 +83,24 @@ void BufferFactory::add(Mesh* pMesh) {
     bufferSpecs.sizeofIndices = pMesh->sizeofIndices();
 
     buffer.init(bufferSpecs);
+    LLOG("Buffer added to factory!");
 }
 
 
 Buffer* BufferFactory::get(BufferType type) {
     for (Buffer& buffer : mBuffers) {
         if (buffer.getType() == type) {
-            LLOG("Returing correct buffer type from factory...");
+            // LLOG("Returning correct buffer type from factory: " + convertEnumToStr(type));
             return &buffer;
         }
     }
-    LLOG("Could not find correct buffer type at factory!");
+    LLOG("Could not find correct buffer type at factory! " + convertEnumToStr(type));
     return nullptr;
 }
 
 
 void BufferFactory::clear() {
+    LLOG("Clearing buffer factory...");
     mBuffers.clear();
 }
 

@@ -7,23 +7,36 @@ namespace le
 {
 
 
+std::string convertEnumToStr(MeshType type) {
+    switch (type) {
+    case MeshType::CONNECTOR_01: return "CONNECTOR_01";
+    case MeshType::CONNECTOR_02: return "CONNECTOR_02";
+    case MeshType::ROAD: return "ROAD";
+    case MeshType::START_PLACE: return "START_PLACE";
+    case MeshType::PARKING_SPOT: return "PARKING_SPOT";
+    default: return "NONE";
+    }
+}
+
+
 static vec3 convert(objl::Vector3 v) {
     return vec3{ v.X, v.Y, v.Z };
 }
 
 
-b8 ObjMesh::loadFile(const char* path) {
-    LLOG("Loading obj file...");
-    if (!Path::exists(path)) {
+b8 ObjMesh::loadFile(const std::string& path) {
+    LLOG("Loading obj file: " + path);
+    mPath = path;
+    if (!Path::exists(path.c_str())) {
         LLOG("Selected obj file does not exist!");
         return mLoaded = LFALSE;
     }
 
     objl::Loader Loader;
-    const b8 loadedModelProperly{ Loader.LoadFile(std::string{ path }) };
+    const b8 loadedModelProperly{ Loader.LoadFile(path) };
     
     if (!loadedModelProperly) {
-        LLOG("Couldnt load properly obj file!");
+        LLOG("Couldnt load properly obj file " + mPath + "!");
         return mLoaded = LFALSE;
     }
 
@@ -38,7 +51,7 @@ b8 ObjMesh::loadFile(const char* path) {
         }
     }
 
-    LLOG("Loaded properly obj file!");
+    LLOG("Loaded properly obj file: " + mPath);
     return mLoaded = LTRUE;
 }
 
@@ -74,6 +87,10 @@ u32 ObjMesh::countIndices() const { return (u32)mIndices.size(); }
 u32 ObjMesh::sizeofIndices() const { return (u32)(mIndices.size() * sizeof(decltype(mIndices[0]))); }
 
 
+const std::string ObjMesh::getPath() const {
+    return mPath;
+}
+
 MeshType ObjMesh::getType() const {
     return mType;
 }
@@ -94,22 +111,26 @@ u32 CubeMesh::sizeofIndices() const { return (u32)(mIndices.size() * sizeof(decl
 
 
 void ObjMeshFactory::init() {
+    LLOG("Initializing obj mesh factory...");
     for (u32 i = 0; i < mPaths.size(); i++) {
         const auto [path, type] = mPaths[i];
+        LLOG("Emplacing at mesh factory object located at: " + path);
         auto& objMesh{ mVector.emplace_back() };
         objMesh.setType(type);
         objMesh.loadFile(path.c_str());
+        LLOG("Loading end status " + objMesh.getPath() + " : " + (objMesh.loadedProperly() ? "TRUE" : "FALSE"));
     }
+    LLOG("Initialized obj mesh factory!");
 }
 
 ObjMesh* ObjMeshFactory::get(MeshType type) {
     for (ObjMesh& objMesh : mVector) {
         if (objMesh.getType() == type) {
-            LLOG("Returing correct obj mesh from factory...");
+            LLOG("Returing correct obj mesh from factory: " + objMesh.getPath());
             return &objMesh;
         }
     }
-    LLOG("Could not find correct obj mesh at factory!");
+    LLOG("Could not find correct obj mesh at factory! " + convertEnumToStr(type));
     return nullptr;
 }
 
@@ -118,11 +139,30 @@ ObjMesh* ObjMeshFactory::get(u32 i) {
 }
 
 void ObjMeshFactory::close() {
+    LLOG("Clearing Obj Mesh Factory...");
     mVector.clear();
 }
 
 u32 ObjMeshFactory::size() const {
     return (u32)mVector.size();
+}
+
+
+static void displayVec(vec4& v, const char* name) {
+    std::cout << name << ": " << v.x << ", " << v.y << ", " << v.z << ", " << v.w << '\n';
+}
+
+static void displayVec(vec3& v, const char* name) {
+    std::cout << name << ": " << v.x << ", " << v.y << ", " << v.z << '\n';
+}
+
+void displayInfoAbout(MeshRuntimeSpecification* pSpecs) {
+    LLOG("MeshRuntimeSpecs Info...");
+    std::cout << "MeshRuntimeSpecs Info: " << convertEnumToStr(pSpecs->type) << '\n';
+    displayVec(pSpecs->position, "Position");
+    displayVec(pSpecs->rotation, "Rotation");
+    displayVec(pSpecs->scale, "Scale");
+    displayVec(pSpecs->color, "Color");
 }
 
 

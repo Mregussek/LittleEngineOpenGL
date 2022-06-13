@@ -21,6 +21,9 @@ enum class MeshType {
 };
 
 
+std::string convertEnumToStr(MeshType type);
+
+
 struct MeshRuntimeSpecification {
 
     color4 color;
@@ -36,6 +39,9 @@ struct MeshRuntimeSpecification {
     MeshType type;
 
 };
+
+
+void displayInfoAbout(MeshRuntimeSpecification* pSpecs);
 
 
 using MeshRuntimeSpecificationVector = std::vector<MeshRuntimeSpecification>;
@@ -61,7 +67,7 @@ class ObjMesh : public Mesh {
 
 public:
 
-    b8 loadFile(const char* path);
+    b8 loadFile(const std::string& path);
 
     b8 loadedProperly() const;
 
@@ -73,6 +79,7 @@ public:
     u32 countIndices() const override;
     u32 sizeofIndices() const override;
 
+    const std::string getPath() const;
     MeshType getType() const;
 
 private:
@@ -84,7 +91,7 @@ private:
 
     std::vector<f32> mVertices{};
     std::vector<u32> mIndices{};
-    u32 mID{ 0 };
+    std::string mPath{ "" };
     MeshType mType{ MeshType::NONE };
     b8 mLoaded{ LFALSE };
 
