@@ -72,7 +72,7 @@ class PlaceVector {
 public:
 
 	template<typename TPlace>
-	void add(point3 position, rotation3 rotation, scale3 scale, color4 color, f32 angle) {
+	Place* add(point3 position, rotation3 rotation, scale3 scale, color4 color, f32 angle) {
 		TPlace* pPlace{ new TPlace };
 		pPlace->position = position;
 		pPlace->rotation = rotation;
@@ -80,6 +80,7 @@ public:
 		pPlace->color = color;
 		pPlace->angle = angle;
 		mPlaces.push_back(pPlace);
+		return pPlace;
 	}
 
 	void clearAll();

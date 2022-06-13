@@ -22,7 +22,8 @@ void ParkingEntity::start() {
 
     mPlaceVector.add<Road03Place>(point3{ 6.f, 0.f, -4.f }, rotation3{ yAxisRot }, scale3{ defaultScale }, Colors::blue(ColorType::DEFAULT), 90.f);
 
-    mPlaceVector.add<ParkingPlace>(point3{ 2.f, 0.f, -6.f }, rotation3{ yAxisRot }, scale3{ defaultScale }, Colors::pink(ColorType::DEFAULT), 180.f);
+    Place* pPlace = mPlaceVector.add<ParkingPlace>(point3{ 2.f, 0.f, -6.f }, rotation3{ yAxisRot }, scale3{ defaultScale }, Colors::pink(ColorType::DEFAULT), 180.f);
+    pPlace->visited = LTRUE;
     mPlaceVector.add<ParkingPlace>(point3{ 4.f, 0.f, -6.f }, rotation3{ yAxisRot }, scale3{ defaultScale }, Colors::pink(ColorType::DEFAULT), 180.f);
     mPlaceVector.add<ParkingPlace>(point3{ 6.f, 0.f, -6.f }, rotation3{ yAxisRot }, scale3{ defaultScale }, Colors::pink(ColorType::DEFAULT), 180.f);
 }
