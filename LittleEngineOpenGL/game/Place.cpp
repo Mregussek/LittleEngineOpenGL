@@ -27,4 +27,24 @@ void PlaceVector::clearAll() {
 }
 
 
+Place* PlaceVector::get(u32 i) const { 
+	return mPlaces[i];
+}
+
+
+Place* PlaceVector::getFirstFoundType(MeshType type) const {
+	for (Place* place : mPlaces) {
+		if (place->getType() == type) {
+			return place;
+		}
+	}
+	LLOG("Could not find place with type " + convertEnumToStr(type));
+	return nullptr;
+}
+
+u32 PlaceVector::size() const { 
+	return (u32)mPlaces.size();
+}
+
+
 }

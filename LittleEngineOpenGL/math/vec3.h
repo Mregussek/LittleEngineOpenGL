@@ -29,6 +29,7 @@ struct vec3 {
     static f32 dot(vec3 a, vec3 b);
     static f32 length(vec3 v);
     static vec3 normalize(vec3 v);
+    static b8 compare(vec3 a, vec3 b, f32 margin);
 
 	b8 operator==(vec3 other) const;
 	b8 operator!=(vec3 other) const;

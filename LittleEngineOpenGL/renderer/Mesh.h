@@ -17,7 +17,7 @@ class ObjMeshFactory;
 
 
 enum class MeshType {
-    NONE, ROAD_01, ROAD_02, ROAD_03, PARKING_SPOT, START_PLACE
+    NONE, ROAD_01, ROAD_02, ROAD_03, PARKING_SPOT, START_PLACE, CAR_01
 };
 
 
@@ -167,12 +167,13 @@ public:
 
 private:
 
-    const std::array<std::pair<std::string, MeshType>, 5> mPaths{
+    const std::array<std::pair<std::string, MeshType>, 6> mPaths{
         std::pair{ "resources/road_01.obj", MeshType::ROAD_01 },
         std::pair{ "resources/road_02.obj", MeshType::ROAD_02 },
         std::pair{ "resources/road_03.obj", MeshType::ROAD_03 },
         std::pair{ "resources/parking_spot.obj", MeshType::PARKING_SPOT },
-        std::pair{ "resources/cube.obj", MeshType::START_PLACE }
+        std::pair{ "resources/cube.obj", MeshType::START_PLACE },
+        std::pair{ "resources/cube.obj", MeshType::CAR_01 }
     };
 
     ObjMeshVector mVector;

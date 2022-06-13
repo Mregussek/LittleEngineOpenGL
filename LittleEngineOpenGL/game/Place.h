@@ -83,9 +83,9 @@ public:
 
 	void clearAll();
 	
-	Place* get(u32 i) const { return mPlaces[i]; }
-
-	u32 size() const { return (u32)mPlaces.size(); }
+	Place* get(u32 i) const;
+	Place* getFirstFoundType(MeshType type) const;
+	u32 size() const;
 
 	template<typename TPlace>
 	b8 findNeareastFrom(point3 startingPoint, Place* pPlace) {

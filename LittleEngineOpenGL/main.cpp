@@ -91,6 +91,7 @@ auto main() -> i32 {
 
     le::ParkingEntity parkingEntity;
     le::CarEntity carEntity;
+    carEntity.passParkingEntity(&parkingEntity);
 
     le::EntityPointerVector entityPointerVector{
         &parkingEntity, &carEntity
@@ -99,9 +100,12 @@ auto main() -> i32 {
     for (le::Entity* pEntity : entityPointerVector) {
         pEntity->start();
     }
-    
-    le::MeshRuntimeSpecificationVector meshRuntimeSpecsVector;
-    fillMeshRuntimeSpecsWithParkingEntity(&parkingEntity, &meshRuntimeSpecsVector);
+
+    le::MeshRuntimeSpecificationVector parkingMeshRuntimeSpecsVector;
+    le::fillMeshRuntimeSpecsWithParkingEntity(&parkingEntity, &parkingMeshRuntimeSpecsVector);
+
+    le::MeshRuntimeSpecification carMeshRuntimeSpecs;
+    le::fillMeshRuntimeSpecsWithCarEntity(&carEntity, &carMeshRuntimeSpecs);
 
     auto uniformSetupFunc = [](le::Camera* pCamera, le::Shader* pShader, le::MeshRuntimeSpecification* pMeshSpecs,
                                le::PointLight* pPointLight) {
@@ -141,10 +145,21 @@ auto main() -> i32 {
 
         renderSpecs.clearColor = le::color4::random(0.f, 0.1f);
         renderer.updateSpecs(renderSpecs);
-
         renderer.clearScreen();
-        for (u32 i = 0; i < meshRuntimeSpecsVector.size(); i++) {
-            le::MeshRuntimeSpecification& meshSpecs{ meshRuntimeSpecsVector[i] };
+
+        for (le::Entity* pEntity : entityPointerVector) {
+            pEntity->update(window.getDeltaTime());
+        }
+
+        // Rendering Car...
+        carMeshRuntimeSpecs.position = carEntity.getSpecs().position;
+        renderModelSpecs.pBuffer = bufferFactory.get(carMeshRuntimeSpecs.type);
+        renderModelSpecs.pMeshSpecs = &carMeshRuntimeSpecs;
+        renderer.draw(renderModelSpecs);
+
+        // Rendering Parking...
+        for (u32 i = 0; i < parkingMeshRuntimeSpecsVector.size(); i++) {
+            le::MeshRuntimeSpecification& meshSpecs{ parkingMeshRuntimeSpecsVector[i] };
             renderModelSpecs.pBuffer = bufferFactory.get(meshSpecs.type);
             renderModelSpecs.pMeshSpecs = &meshSpecs;
 
@@ -160,7 +175,7 @@ auto main() -> i32 {
     }
     bufferFactory.clear();
     objMeshFactory.close();
-    meshRuntimeSpecsVector.clear();
+    parkingMeshRuntimeSpecsVector.clear();
     shader.close();
     input.close();
     window.close();

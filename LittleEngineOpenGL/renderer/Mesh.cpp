@@ -14,6 +14,7 @@ std::string convertEnumToStr(MeshType type) {
     case MeshType::ROAD_03: return "ROAD_03";
     case MeshType::START_PLACE: return "START_PLACE";
     case MeshType::PARKING_SPOT: return "PARKING_SPOT";
+    case MeshType::CAR_01: return "CAR_01";
     default: return "NONE";
     }
 }

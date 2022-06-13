@@ -43,6 +43,18 @@ vec3 vec3::normalize(vec3 v) {
 }
 
 
+b8 vec3::compare(vec3 a, vec3 b, f32 margin) {
+	if (
+		a.x - margin < b.x && b.x < a.x + margin &&
+		a.y - margin < b.y && b.y < a.y + margin &&
+		a.z - margin < b.z && b.z < a.z + margin
+		) {
+		return LTRUE;
+	}
+	return LFALSE;
+}
+
+
 b8 vec3::operator==(vec3 other) const {
 	return ((x == other.x) && (y == other.y) && (z == other.z)) ? LTRUE : LFALSE;
 }

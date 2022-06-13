@@ -4,6 +4,7 @@
 
 
 #include "Place.h"
+#include "Car.h"
 
 
 namespace le
@@ -15,7 +16,7 @@ public:
 
     virtual void start() { }
 
-    virtual void update() { }
+    virtual void update(f32 deltaTime) { }
 
     virtual void close() { }
 
@@ -29,7 +30,7 @@ class ParkingEntity : public Entity {
 public:
 
     void start() override;
-    void update() override;
+    void update(f32 deltaTime) override;
     void close() override;
 
     const PlaceVector& getPlaceVector() const;
@@ -44,17 +45,20 @@ private:
 class CarEntity : public Entity {
 public:
 
-    void start() override {
+    void start() override;
+    void update(f32 deltaTime) override;
+    void close() override;
 
-    }
+    void passParkingEntity(ParkingEntity* pEntity);
+    const CarSpecification& getSpecs() const;
 
-    void update() override {
+private:
 
-    }
-
-    void close() override {
-
-    }
+    CarSpecification mCarSpecs{};
+    ParkingEntity* pParkingEntity{ nullptr };
+    vec3 mDestination{};
+    vec3 mDirection{};
+    f32 mStepSize{ 0.f };
 
 };
 

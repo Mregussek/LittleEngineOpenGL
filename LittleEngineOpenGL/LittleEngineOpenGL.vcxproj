@@ -150,6 +150,7 @@
     <ClCompile Include="3rdparty\glad\src\glad.c" />
     <ClCompile Include="3rdparty\OBJ_Loader\Source\OBJ_Loader.cpp" />
     <ClCompile Include="filesystem\path.cpp" />
+    <ClCompile Include="game\Car.cpp" />
     <ClCompile Include="game\Entity.cpp" />
     <ClCompile Include="game\Place.cpp" />
     <ClCompile Include="game\Utilities.cpp" />
@@ -168,6 +169,7 @@
   <ItemGroup>
     <ClInclude Include="3rdparty\OBJ_Loader\Source\OBJ_Loader.h" />
     <ClInclude Include="filesystem\path.h" />
+    <ClInclude Include="game\Car.h" />
     <ClInclude Include="game\Entity.h" />
     <ClInclude Include="game\Place.h" />
     <ClInclude Include="game\Utilities.h" />
