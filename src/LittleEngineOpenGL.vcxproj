@@ -116,13 +116,13 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(SolutionDir)\LittleEngineOpenGL\3rdparty\glm-master;$(SolutionDir)\LittleEngineOpenGL;$(SolutionDir)\LittleEngineOpenGL\3rdparty\glad\include;$(SolutionDir)\LittleEngineOpenGL\3rdparty\OBJ-Loader\Source;$(SolutionDir)\LittleEngineOpenGL\3rdparty\OBJ_Loader\Source;$(SolutionDir)\LittleEngineOpenGL\3rdparty\glfw-3.3.6\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)\src\3rdparty\glm-master;$(SolutionDir)\src;$(SolutionDir)\src\3rdparty\glad\include;$(SolutionDir)\src\3rdparty\OBJ-Loader\Source;$(SolutionDir)\src\3rdparty\OBJ_Loader\Source;$(SolutionDir)\src\3rdparty\glfw-3.3.6\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <LanguageStandard>stdcpp20</LanguageStandard>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalLibraryDirectories>$(SolutionDir)\LittleEngineOpenGL\3rdparty\glfw-3.3.6\lib-vc2022;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>$(SolutionDir)\src\3rdparty\glfw-3.3.6\lib-vc2022;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <AdditionalDependencies>glfw3.lib;opengl32.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
@@ -134,7 +134,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(SolutionDir)\LittleEngineOpenGL\3rdparty\glm-master;$(SolutionDir)\LittleEngineOpenGL;$(SolutionDir)\LittleEngineOpenGL\3rdparty\glad\include;$(SolutionDir)\LittleEngineOpenGL\3rdparty\glfw-3.3.6\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)\src\3rdparty\glm-master;$(SolutionDir)\src;$(SolutionDir)\src\3rdparty\glad\include;$(SolutionDir)\src\3rdparty\OBJ-Loader\Source;$(SolutionDir)\src\3rdparty\OBJ_Loader\Source;$(SolutionDir)\src\3rdparty\glfw-3.3.6\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <LanguageStandard>stdcpp20</LanguageStandard>
     </ClCompile>
     <Link>
@@ -143,7 +143,7 @@
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalDependencies>glfw3.lib;opengl32.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <AdditionalLibraryDirectories>$(SolutionDir)\LittleEngineOpenGL\3rdparty\glfw-3.3.6\lib-vc2022;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>$(SolutionDir)\src\3rdparty\glfw-3.3.6\lib-vc2022;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
